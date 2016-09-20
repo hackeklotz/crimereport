@@ -29,14 +29,29 @@ class CrimeReportApp(App):
         self.control = BoxLayout(orientation='vertical')
         self.control.size_hint = (0.6, 1)
 
+        # create load button
         button = Button(text="load", size_hint=(1, 0.1))
         button.bind(on_release=self.load)
         self.control.add_widget(button)
+
+	# create empty list view for crimes
+        args_converter = lambda row_index, rec: {'text': get_caption(rec)}
+
+        self.list_adapter = ListAdapter(data=[], # empty
+                                   args_converter=args_converter,
+                                   cls='CrimeButton')
+
+        self.list_adapter.bind(on_selection_change=self.crimeSelected)
+
+        list_view = ListView(adapter=self.list_adapter)
+        self.control.add_widget(list_view)
+
 
         root.add_widget(self.control)
         return root
 
     def load(self, obj):
+        # load crimes from data base
         import database
         database2 = database.SqliteDatabase()
         crimes = database2.load_crimes()
@@ -44,16 +59,8 @@ class CrimeReportApp(App):
         for crime in crimes:
             self.map.add_crime_marker(crime)
 
-        args_converter = lambda row_index, rec: {'text': get_caption(rec)}
-
-        list_adapter = ListAdapter(data=crimes,
-                                   args_converter=args_converter,
-                                   cls='CrimeButton')
-
-        list_adapter.bind(on_selection_change=self.crimeSelected)
-
-        list_view = ListView(adapter=list_adapter)
-        self.control.add_widget(list_view)
+        # replace the data in the list adapter -> list view will be updated automatically
+        self.list_adapter.data = crimes
 
     def crimeSelected(self, adapter):
         for selection in adapter.selection:
