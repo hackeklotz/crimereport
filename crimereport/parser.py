@@ -35,7 +35,7 @@ class Parser:
             date = self.__cleantext(match.group(2)[len("Zeit:"):])
             place = self.__cleantext(match.group(3)[len("Ort:"):])
             message = self.__cleantext(match.group(4))
-            crime = Crime(title, date, place, message)
+            crime = Crime(title, date, place, message, None, None)
             crimes.append(crime)
 
         return crimes
@@ -63,7 +63,7 @@ class Crime:
 
 
 if __name__ == "__main__":
-    text_file = open("Output.txt", "r")
+    text_file = open("../examples/Output.txt", "r")
     text = text_file.read()
     text_file.close()
 
