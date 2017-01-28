@@ -6,6 +6,7 @@ import logging
 
 logger = logging.getLogger()
 
+
 def enrich_crimes(reports):
     for i_report, report in enumerate(reports):
         logger.info('Enrich report ' + str(i_report) + '/' + str(len(reports)))

@@ -1,7 +1,6 @@
 __author__ = 'aberklotz'
 
 import sqlite3
-import json
 
 
 class SqliteDatabase:

@@ -16,6 +16,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 class Parser:
     def parse_reports(self, pages: Dict[str, str]) -> List[MediaInformation]:
         reports = []
@@ -40,7 +41,6 @@ class Parser:
     def __parse_crimes(self, tree):
         content = tree.xpath('//div[@id="content"]')
         div = content[0].getchildren()[6]
-        pp = div.getchildren()[3]
 
         textbytes = etree.tostring(div)
         text = str(textbytes, 'utf-8')
@@ -78,10 +78,6 @@ class Parser:
         return re.sub("<.*?>", "", text)
 
     def __parse_single_crime(self, part):
-        # print(part)
-        title = part.split("</strong>", 1)
-        # print(title)
-        # match = re.match("(?:(.*)?</strong>)?.*?(?:Zeit(.*))?(?:Ort(.*))?(.*?)", part)
         line_break = "(?:<br />|<BR>)"
         match = re.match("(.*?)Zeit\s?:(.*)?Ort\s?:(.*?)" + line_break + "(.*)", part)
         if match:
@@ -89,9 +85,6 @@ class Parser:
             date = self.__cleantext(match.group(2))
             place = self.__cleantext(match.group(3))
             message = self.__cleantext(match.group(4))
-            a=3
-            a="vb"
-            a+=4
 
             return CrimeOriginal(title, date, place, message)
 

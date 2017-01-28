@@ -25,8 +25,8 @@ class CrimeOriginal:
 class CrimeEnriched:
     def __init__(self, crime_original, latitude, longitude):
         self.crime_original = crime_original
-        self.latitude = self.latitude
-        self.longitude = self.longitude
+        self.latitude = latitude
+        self.longitude = longitude
 
     def has_geo_position(self):
         return self.latitude is not None and self.longitude is not None

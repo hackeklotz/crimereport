@@ -9,8 +9,8 @@ logger.setLevel(logging.INFO)
 stream = logging.StreamHandler()
 logger.addHandler(stream)
 
-def do_it_all(path_download, path_database):
 
+def do_it_all(path_download, path_database):
     with open(path_download) as data_file:
         pages = json.load(data_file)
 
@@ -25,6 +25,7 @@ def do_it_all(path_download, path_database):
     database2 = database.SqliteDatabase(path_database)
     database2.init_database()
     database2.store_reports(reports)
+
 
 if __name__ == '__main__':
     pathDownload = '../examples/crimes2017.json'
