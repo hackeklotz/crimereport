@@ -1,4 +1,3 @@
 # Crime Report
 
-A small python tool that visualises the location of crimes on a map. 
-The crimes are parsed from the Saxon State Police' web site.
+A web scraper to extract crimes from the Saxon State police website.

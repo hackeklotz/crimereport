@@ -1,78 +1,139 @@
 __author__ = 'aberklotz'
 
-import html
-import ssl
+from typing import Dict, List
 import re
+import html
 
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.poolmanager import PoolManager
-import requests
+import lxml.html
 
-from geopy.geocoders import Nominatim
+from lxml import etree
 
+from crime import MediaInformation
+from crime import CrimeOriginal
 
-class MyAdapter(HTTPAdapter):
-    def init_poolmanager(self, connections, maxsize, block=False):
-        self.poolmanager = PoolManager(num_pools=connections,
-                                       maxsize=maxsize,
-                                       block=block,
-                                       ssl_version=ssl.PROTOCOL_TLSv1)
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class Parser:
-    def retrieve(self, link):
-        session = requests.Session()
-        session.mount('https://', MyAdapter())
+    def parse_reports(self, pages: Dict[str, str]) -> List[MediaInformation]:
+        reports = []
+        for url, text in pages.items():
+            tree = lxml.html.fromstring(text)
 
-        page = session.get(link)
-        return page.text
+            if self.__is_police_district_dresden(tree):
+                crimes = self.__parse_crimes(tree)
 
-    def parse(self, text):
+                url = url[:-4]
+                report_id = url.rpartition('_')[2]
+
+                report = MediaInformation(report_id, 2017, "", "title", "date", crimes)
+                reports.append(report)
+
+        return reports
+
+    def __is_police_district_dresden(self, tree):
+        title = tree.xpath('//title')[0].text
+        return "Dresden" in title
+
+    def __parse_crimes(self, tree):
+        content = tree.xpath('//div[@id="content"]')
+        div = content[0].getchildren()[6]
+        pp = div.getchildren()[3]
+
+        textbytes = etree.tostring(div)
+        text = str(textbytes, 'utf-8')
+        text = html.unescape(text)
+        parts = re.split("<a name=[\"\']?#mi.*?></a>", text)
+
         crimes = []
-
-        for match in re.finditer('<P><B>(.*?)</B></P>\n<P>(.*?)<BR>(.*?)</P>\n<P>(.*?)</P>', text):
-            title = self.__cleantext(match.group(1))
-            date = self.__cleantext(match.group(2)[len("Zeit:"):])
-            place = self.__cleantext(match.group(3)[len("Ort:"):])
-            message = self.__cleantext(match.group(4))
-            crime = Crime(title, date, place, message, None, None)
-            crimes.append(crime)
+        for part in parts:
+            if self.__iscrime(part):
+                crime = self.__parse_single_crime(part)
+                crimes.append(crime)
 
         return crimes
 
+    def __iscrime(self, text):
+        text = self.__cleanfromtags(text)
+
+        if text.isspace() or not text:
+            return False
+
+        if (text == "Landeshauptstadt Dresden"
+            or text == "Landkreis Meißen"
+            or text == "Landkreis Sächsische Schweiz-Osterzgebirge"):
+            return False
+
+        if text.strip().startswith("Medieninformation"):
+            return False
+
+        if text.strip().startswith("Wer hat den Unfall beobachtet"):
+            return False
+
+        return True
+
+    def __cleanfromtags(self, text):
+        return re.sub("<.*?>", "", text)
+
+    def __parse_single_crime(self, part):
+        # print(part)
+        title = part.split("</strong>", 1)
+        # print(title)
+        # match = re.match("(?:(.*)?</strong>)?.*?(?:Zeit(.*))?(?:Ort(.*))?(.*?)", part)
+        line_break = "(?:<br />|<BR>)"
+        match = re.match("(.*?)Zeit\s?:(.*)?Ort\s?:(.*?)" + line_break + "(.*)", part)
+        if match:
+            title = self.__cleantext(match.group(1))
+            date = self.__cleantext(match.group(2))
+            place = self.__cleantext(match.group(3))
+            message = self.__cleantext(match.group(4))
+            a=3
+            a="vb"
+            a+=4
+
+            return CrimeOriginal(title, date, place, message)
+
+        match = re.match("(.*?)Ort\s?:(.*)?Zeit\s?:(.*?)" + line_break + "(.*)", part)
+        if match:
+            title = self.__cleantext(match.group(1))
+            date = self.__cleantext(match.group(3))
+            place = self.__cleantext(match.group(2))
+            message = self.__cleantext(match.group(4))
+
+            return CrimeOriginal(title, date, place, message)
+
+        match = re.match("(.*?)Tatzeit\s?:(.*)?Tatort\s?:(.*?)" + line_break + "(.*)", part)
+        if match:
+            title = self.__cleantext(match.group(1))
+            date = self.__cleantext(match.group(2))
+            place = self.__cleantext(match.group(3))
+            message = self.__cleantext(match.group(4))
+
+            return CrimeOriginal(title, date, place, message)
+
+        match = re.match("(.*?)" + line_break + "(.*)", part)
+        if match:
+            title = self.__cleantext(match.group(1))
+            message = self.__cleantext(match.group(2))
+            return CrimeOriginal(title, None, None, message)
+
+        logging.warning("Couldn't match a crime")
+        logging.debug("Couldn't match the crime" + part)
+        return CrimeOriginal("", "", "", "")
+
     def __cleantext(self, text):
-        clean_text = text.replace("&nbsp;", "")
-        clean_text = clean_text.strip()
-        return html.unescape(clean_text)
-
-
-class Crime:
-    def __init__(self, title, date, place, message, latitude, longitude):
-        self.title = title
-        self.date = date
-        self.place = place
-        self.message = message
-        self.latitude = latitude
-        self.longitude = longitude
-
-    def has_geo_position(self):
-        return self.latitude is not None and self.longitude is not None
-
-    def __str__(self):
-        return "Title: " + self.title + "\n" + "Date: " + self.date + "\n" + "Place: " + self.place + "\n"
+        clean_text = text.replace("<br /><br />", "\n")
+        clean_text = self.__cleanfromtags(clean_text)
+        return clean_text.strip()
 
 
 if __name__ == "__main__":
-    text_file = open("../examples/Output.txt", "r")
-    text = text_file.read()
-    text_file.close()
+    import json
+
+    with open('../examples/crimes2017.json') as data_file:
+        pages = json.load(data_file)
 
     parser = Parser()
-    # text = parser.retrieve('https://www.polizei.sachsen.de/de/MI_2015_37021.htm')
-    crimes = parser.parse(text)
-
-    import database
-
-    database2 = database.SillyFileSaver()
-    database2.store_crimes(crimes)
-    print(database2.load_crimes())
+    parser.parse_reports(pages)
