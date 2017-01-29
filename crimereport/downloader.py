@@ -25,7 +25,7 @@ class Downloader:
         return pages
 
 
-if __name__ == "__main__":
+def main():
     import json
 
     downloader = Downloader()
@@ -33,3 +33,7 @@ if __name__ == "__main__":
 
     with open('../build/examples/crimes2017-Test.json', 'w', encoding='utf8') as fp:
         json.dump(pages, fp, ensure_ascii=False)
+
+
+if __name__ == "__main__":
+    main()

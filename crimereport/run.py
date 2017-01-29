@@ -27,8 +27,12 @@ def do_it_all(path_download, path_database):
     database2.store_reports(reports)
 
 
-if __name__ == '__main__':
+def main():
     pathDownload = '../examples/crimes2017.json'
 
     pathDatabase = '../examples/crimes2017.sq3'
     do_it_all(pathDownload, pathDatabase)
+
+
+if __name__ == '__main__':
+    main()

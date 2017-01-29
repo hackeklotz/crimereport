@@ -119,7 +119,7 @@ class Parser:
         return clean_text.strip()
 
 
-if __name__ == "__main__":
+def main():
     import json
 
     with open('../examples/crimes2017.json') as data_file:
@@ -127,3 +127,7 @@ if __name__ == "__main__":
 
     parser = Parser()
     parser.parse_reports(pages)
+
+
+if __name__ == "__main__":
+    main()
