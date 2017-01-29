@@ -1,6 +1,3 @@
-__author__ = 'aberklotz'
-
-
 class MediaInformation:
     def __init__(self, id, year, number, title, date, crimes):
         self.id = id

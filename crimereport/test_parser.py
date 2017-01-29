@@ -2,8 +2,6 @@ from unittest import TestCase
 from parser import Parser
 import json
 
-__author__ = 'aberklotz'
-
 
 class TestParser(TestCase):
     def test_parse_reports_filteroutnondresdenpolicedistrict(self):

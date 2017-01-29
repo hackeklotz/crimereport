@@ -1,8 +1,7 @@
-__author__ = 'aberklotz'
-
 from typing import Dict, List
 import re
 import html
+import logging
 
 import lxml.html
 
@@ -10,8 +9,6 @@ from lxml import etree
 
 from crime import MediaInformation
 from crime import CrimeOriginal
-
-import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

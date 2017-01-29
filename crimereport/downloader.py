@@ -1,8 +1,6 @@
 import html
-
-__author__ = 'aberklotz'
-
 from typing import Dict
+
 import requests
 
 

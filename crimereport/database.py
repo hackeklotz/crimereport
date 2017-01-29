@@ -1,5 +1,3 @@
-__author__ = 'aberklotz'
-
 import sqlite3
 
 

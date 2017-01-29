@@ -1,8 +1,7 @@
-__author__ = 'aberklotz'
-
 import time
-from geopy import Nominatim
 import logging
+
+from geopy import Nominatim
 
 logger = logging.getLogger()
 
