@@ -1,11 +1,13 @@
 from unittest import TestCase
 from parser import Parser
 import json
+import os
 
 
 class TestParser(TestCase):
     def test_parse_reports_filteroutnondresdenpolicedistrict(self):
-        with open('../resources/crimePages.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/crimePages.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -14,7 +16,8 @@ class TestParser(TestCase):
         self.assertEqual(len(reports), 1)
 
     def test_parse_reports_multiplereports(self):
-        with open('../resources/crimePages2.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/crimePages2.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -23,7 +26,8 @@ class TestParser(TestCase):
         self.assertEqual(len(reports), 4)
 
     def test_parse_reports_getcrimes1(self):
-        with open('../resources/raub.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/raub.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -33,7 +37,8 @@ class TestParser(TestCase):
         self.assertEqual(len(reports[0].crimes), 14)
 
     def test_parse_reports_getcrimes2(self):
-        with open('../resources/bullenkopf.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/bullenkopf.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -43,7 +48,8 @@ class TestParser(TestCase):
         self.assertEqual(len(reports[0].crimes), 2)
 
     def test_parse_reports_getcrimes3(self):
-        with open('../resources/injektionsnadeln.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/injektionsnadeln.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -53,7 +59,8 @@ class TestParser(TestCase):
         self.assertEqual(len(reports[0].crimes), 11)
 
     def test_parse_reports_getcrimes4(self):
-        with open('../resources/fliegerbombe.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/fliegerbombe.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -63,7 +70,8 @@ class TestParser(TestCase):
         self.assertEqual(len(reports[0].crimes), 1)
 
     def test_parse_reports_getcrimedetails(self):
-        with open('../resources/bullenkopf.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/bullenkopf.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
@@ -82,7 +90,8 @@ class TestParser(TestCase):
         self.assertTrue(crime2.message.startswith('Heute Vormittag stießen auf der Ortsverbindungsstraße'))
 
     def test_parse_reports_getcrimedetails2(self):
-        with open('../resources/raub.json') as data_file:
+        path = os.path.join(os.path.dirname(__file__), '../resources/raub.json')
+        with open(path) as data_file:
             pages = json.load(data_file)
 
         parser2 = Parser()
