@@ -1,6 +1,7 @@
-language: python
-python:
-  - "3.6"
-install:
-  - pip install -r requirements.txt
-script: pytest
+matrix:
+  include:
+    - language: python
+      python: 3.6
+      before_script: cd parser
+      install: pip install -r requirements.txt
+      script: cd parser && pytest
