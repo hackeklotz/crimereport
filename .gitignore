@@ -1,2 +1,9 @@
-.idea/
-/build
+parser/.idea/
+parser/build
+frontend/build
+frontend/bin
+frontend/.settings 
+frontend/.project
+frontend/.classpath
+frontend/.gradle
+
