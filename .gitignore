@@ -1,9 +1,14 @@
 parser/.idea/
 parser/build
-frontend/build
+rest-service/bin/
+rest-service/build
+rest-service/.settings 
+rest-service/.project
+rest-service/.classpath
+rest-service/.gradle
 frontend/bin
+frontend/build
 frontend/.settings 
 frontend/.project
 frontend/.classpath
 frontend/.gradle
-
