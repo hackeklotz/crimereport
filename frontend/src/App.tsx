@@ -1,22 +1,32 @@
 import * as React from 'react';
 import './App.css';
 
-import logo from './logo.svg';
-
-class App extends React.Component {
-  public render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+export interface ICrime {
+  id: number;
+  time: string;
+  place: string;
+  title: string;
+  text: string
 }
 
-export default App;
+export interface IProps {
+  day: string;
+  crimes: ICrime[];
+}
+
+function CrimeViewer({day, crimes}: IProps) {
+  return (
+    <div>
+      <div>
+        Crimes for {day}
+      </div>
+      <div>        
+        <ul>
+          {crimes.map((crime) => <li key={crime.id}>{crime.title}</li>)}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default CrimeViewer;
