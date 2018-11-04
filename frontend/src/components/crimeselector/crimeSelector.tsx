@@ -1,12 +1,16 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { IStoreState } from 'src/components/types';
+import { INextReport, nextReport } from './crimeSelectorRedux';
 
-export interface IProps {
+interface IProps {
   day: string;
   onNext: () => void;
   onPrevious: () => void;
 }
 
-export function CrimeSelector({day, onNext, onPrevious}: IProps) {
+function CrimeSelector({day, onNext, onPrevious}: IProps) {
   return (
     <div>
       <div>
@@ -17,3 +21,20 @@ export function CrimeSelector({day, onNext, onPrevious}: IProps) {
     </div>
   );
 }
+
+
+// container
+function mapStateToProps({ day }: IStoreState) {
+  return {
+      day,
+  }
+}
+
+function mapDispatchToProps(dispatch: Dispatch<INextReport>) {
+  return {
+      onNext: () => dispatch(nextReport()),
+      onPrevious: () => dispatch(nextReport()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CrimeSelector);

@@ -1,13 +1,6 @@
 import * as React from 'react';
+import { ICrime } from 'src/components/types'
 import './crimeViewer.css';
-
-export interface ICrime {
-  id: number;
-  time: string;
-  place: string;
-  title: string;
-  text: string
-}
 
 export interface IProps {
   crimes: ICrime[];
