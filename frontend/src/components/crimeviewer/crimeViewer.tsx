@@ -10,21 +10,21 @@ export interface ICrime {
 }
 
 export interface IProps {
-  day: string;
   crimes: ICrime[];
 }
 
-export function CrimeViewer({day, crimes}: IProps) {
+export function CrimeViewer({crimes}: IProps) {
+  const crimeList = crimes.map((crime) => <li key={crime.id}>
+    <h3>{crime.title}</h3>
+    <h4>Zeit: {crime.time}</h4>
+    <h4>Ort: {crime.place}</h4>
+    {crime.text}
+    </li>)
   return (
     <div>
-      <div>
-        Crimes for {day}
-      </div>
-      <div>        
-        <ul>
-          {crimes.map((crime) => <li key={crime.id}>{crime.title}</li>)}
-        </ul>
-      </div>
+      <ul>
+        {crimeList}
+      </ul>      
     </div>
   );
 }

@@ -4,6 +4,6 @@ import {CrimeViewer} from './crimeViewer';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<CrimeViewer day='today' crimes={[]}/>, div);
+  ReactDOM.render(<CrimeViewer crimes={[]}/>, div);
   ReactDOM.unmountComponentAtNode(div);
 });
