@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './App.css';
+import './crimeViewer.css';
 
 export interface ICrime {
   id: number;
@@ -14,7 +14,7 @@ export interface IProps {
   crimes: ICrime[];
 }
 
-function CrimeViewer({day, crimes}: IProps) {
+export function CrimeViewer({day, crimes}: IProps) {
   return (
     <div>
       <div>
@@ -28,5 +28,3 @@ function CrimeViewer({day, crimes}: IProps) {
     </div>
   );
 }
-
-export default CrimeViewer;
