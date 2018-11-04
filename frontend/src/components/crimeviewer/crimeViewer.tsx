@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ICrime } from 'src/components/types'
+import { connect } from 'react-redux';
+import { ICrime, IStoreState } from 'src/components/types';
 import './crimeViewer.css';
 
 export interface IProps {
@@ -21,3 +22,12 @@ export function CrimeViewer({crimes}: IProps) {
     </div>
   );
 }
+
+// container
+function mapStateToProps({ crimes }: IStoreState) {
+  return {
+      crimes,
+  }
+}
+
+export default connect(mapStateToProps, null)(CrimeViewer);
