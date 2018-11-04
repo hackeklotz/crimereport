@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IStoreState } from 'src/components/types';
-import { INextReport, nextReport } from './crimeSelectorRedux';
+import { ISwitchReport, nextReport, previousReport } from './crimeSelectorRedux';
 
 interface IProps {
   day: string;
@@ -30,10 +30,10 @@ function mapStateToProps({ day }: IStoreState) {
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<INextReport>) {
+function mapDispatchToProps(dispatch: Dispatch<ISwitchReport>) {
   return {
       onNext: () => dispatch(nextReport()),
-      onPrevious: () => dispatch(nextReport()),
+      onPrevious: () => dispatch(previousReport()),
   }
 }
 
