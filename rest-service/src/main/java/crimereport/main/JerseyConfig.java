@@ -8,5 +8,6 @@ public class JerseyConfig extends ResourceConfig {
 
 	public JerseyConfig() {
 		register(CrimeEndpoint.class);
+		register(ReportEndpoint.class);
 	}
 }

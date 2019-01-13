@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,6 +53,24 @@ public class Database {
 		}
 	}
 
+	public List<Crime> getReport(int id) {
+		LOGGER.info("Retrieve report with ID " + id);
+		try (Connection conn = DriverManager.getConnection(url)) {
+			DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
+			Result<Record> result = create.select().from("crime").where("reportID = " + id).fetch();
+
+			List<Crime> crimes = new ArrayList<>();
+			for (Record record : result) {
+				Crime crime = buildCrime(record);
+				crimes.add(crime);
+			}
+			return crimes;
+		} catch (SQLException e) {
+			LOGGER.error("Couldn't retrieve crimes", e);
+			return new ArrayList<>();
+		}
+	}
+
 	private Crime buildCrime(Record record) {
 		String title = (String) record.get("title");
 		String message = (String) record.get("message");
@@ -64,5 +83,22 @@ public class Database {
 			crimeBuilder.setCoordinate((double) latitude, (double) longitude);
 		}
 		return crimeBuilder.build();
+	}
+
+	public TreeSet<Integer> getAllReportIds() {
+		LOGGER.info("Retrieve all report IDs");
+		try (Connection conn = DriverManager.getConnection(url)) {
+			DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
+			Result<Record> result = create.select().from("crime").fetch();
+
+			TreeSet<Integer> reportIds = new TreeSet<>();
+			for (Record record : result) {
+				reportIds.add(record.get("reportId", Integer.class));
+			}
+			return reportIds;
+		} catch (SQLException e) {
+			LOGGER.error("Couldn't retrieve crimes", e);
+			return new TreeSet<>();
+		}
 	}
 }
