@@ -1,43 +1,90 @@
-import { IStoreState } from 'src/components/types';
+import { Dispatch } from 'redux';
+import { ICrime, IStoreState } from 'src/components/types';
 
 // actions
 export const NEXT_REPORT = 'NEXT_REPORT';
 export const PREVIOUS_REPORT = 'PREVIOUS_REPORT';
+export const REQUEST_REPORT = 'REQUEST_REPORT';
+export const RECEIVE_REPORT = 'RECEIVE_REPORT';
 
 // action creators
 export interface ISwitchReport {
     type: string;
 }
 
-export function nextReport(): ISwitchReport {
+export function nextReport() {
+    return (dispatch: Dispatch<any>, getState: IStoreState) => {
+        const reportId = 46989;
+        dispatch(fetchReport(reportId));
+    };
+}
+
+export function previousReport() {
+    return (dispatch: Dispatch<any>, getState: IStoreState) => {
+        const reportId = 46987;
+        dispatch(fetchReport(reportId));
+    };
+}
+
+export interface IFetchReport {
+    type: string,
+    reportId: number
+}
+
+export function requestReport(currentReportId: number): IFetchReport {
     return {
-        type: NEXT_REPORT
+        reportId: currentReportId,
+        type: REQUEST_REPORT,
     }
 }
 
-export function previousReport(): ISwitchReport {
+export interface IReceiveReport {
+    type: string,
+    reportId: number,
+    posts: ICrime[],
+    receivedAt: number
+}
+
+export function receiveReport(currentReportId: number, report: ICrime[]): IReceiveReport {
     return {
-        type: PREVIOUS_REPORT
+        posts: report,
+        receivedAt: Date.now(),
+        reportId: currentReportId,
+        type: RECEIVE_REPORT,
+    }
+}
+
+export function fetchReport(reportId: number) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestReport(reportId))
+
+        return fetch(`http://localhost:9090/reports/${reportId}`)
+            .then(
+                response => response.json(),
+                error => console.log('An error occurred.', error)
+            )
+            .then(json => dispatch(receiveReport(reportId, json)))
     }
 }
 
 // reducers
-export function switchReport(state: IStoreState, action: ISwitchReport): IStoreState {
+export function fetchReport2(state: IStoreState, action: IReceiveReport): IStoreState {
     switch (action.type) {
-        case NEXT_REPORT:
+        case RECEIVE_REPORT:
             {
-                let num = parseInt(state.day.slice(5), 10);
-                num++;
-                const day2 = 'today' + num;
-                return { ...state, day: day2 };
-            }
-        case PREVIOUS_REPORT:
-            {
-                let num = parseInt(state.day.slice(5), 10);
-                num--;
-                const day2 = 'today' + num;
-                return { ...state, day: day2 };
+                const newCrimes: ICrime[] = []
+                action.posts.forEach((crime) => {
+                    const newCrime = {
+                        id: 1, message: crime.message, place: crime.place,
+                        time: crime.time, title: crime.title
+                    }
+                    newCrimes.push(newCrime)
+                })
+
+                return { ...state, crimes: newCrimes };
             }
     }
     return state;
 }
+
+export default fetchReport2

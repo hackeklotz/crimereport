@@ -12,7 +12,7 @@ export function CrimeViewer({crimes}: IProps) {
     <h3>{crime.title}</h3>
     <h4>Zeit: {crime.time}</h4>
     <h4>Ort: {crime.place}</h4>
-    {crime.text}
+    {crime.message}
     </li>)
   return (
     <div>

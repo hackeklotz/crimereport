@@ -1,8 +1,5 @@
 package crimereport.crimes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CrimeBuilder {
 
 	public final String title;
@@ -25,12 +22,10 @@ public class CrimeBuilder {
 	public Crime build() {
 		Crime crime = new Crime();
 
-		setGeometry(crime);
+		crime.setTitle(title);
+		crime.setMessage(message);
 
-		Map<String, String> properties = new HashMap<>();
-		properties.put("name", title);
-		properties.put("popupContent", message);
-		crime.setProperties(properties);
+		setGeometry(crime);
 
 		return crime;
 	}
