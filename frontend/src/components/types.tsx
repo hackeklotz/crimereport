@@ -1,4 +1,5 @@
 export interface IStoreState {
+    allReportIds: number[];
     day: string;
     reportId: number;
     crimes: ICrime[];
