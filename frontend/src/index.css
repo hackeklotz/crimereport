@@ -6,16 +6,20 @@ body {
 
 .crime-main {
   display: grid; 
-  grid-template-rows:100px 1fr; 
+  grid-template-rows:auto 1fr; 
   grid-template-columns:60% 40%; 
   grid-template-areas:      
     "map selector" 
     "map viewer" 
-  ; 
+  ;  
 }
 
 .crime-selector {
-  grid-area: selector; 
+  grid-area: selector;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
 }
 
 .crime-viewer {
@@ -28,4 +32,29 @@ body {
 
 .leaflet-container {
   height: 800px;
+}
+
+.crime-selector-button {
+  background-color: transparent;
+  border: solid black;
+  border-width: 0 5px 5px 0;  
+  padding: 10px;
+  margin: 0px 20px 0px 20px;
+}
+
+.crime-selector-button:hover {  
+  border: solid gray;
+  border-width: 0 5px 5px 0;        
+}
+
+.crime-selector-button:focus {  
+  outline: none;
+}
+
+.right {
+  transform: rotate(-45deg);  
+}
+
+.left {
+  transform: rotate(135deg);
 }

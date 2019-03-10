@@ -4,28 +4,26 @@ import { IStoreState } from 'src/components/types';
 import { nextReport, previousReport } from './crimeSelectorRedux';
 
 interface IProps {
-  day: string;
+  reportId: number;
   onNext: () => void;
   onPrevious: () => void;
 }
 
-function CrimeSelector({day, onNext, onPrevious}: IProps) {
+function CrimeSelector({reportId, onNext, onPrevious}: IProps) {
   return (
     <div className='crime-selector'>
-      <div>
-        <h2>{day}</h2>
-        <button onClick={onPrevious}>previous</button>
-        <button onClick={onNext}>next</button>
-      </div>      
+        <button onClick={onPrevious} className="crime-selector-button left"/>
+        {reportId}
+        <button onClick={onNext} className="crime-selector-button right"/>
     </div>
   );
 }
 
 
 // container
-function mapStateToProps({ day }: IStoreState) {
+function mapStateToProps({ reportId }: IStoreState) {
   return {
-      day,
+    reportId,
   }
 }
 
