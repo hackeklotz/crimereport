@@ -4,7 +4,28 @@ body {
   font-family: sans-serif;
 }
 
+.crime-main {
+  display: grid; 
+  grid-template-rows:100px 1fr; 
+  grid-template-columns:60% 40%; 
+  grid-template-areas:      
+    "map selector" 
+    "map viewer" 
+  ; 
+}
+
+.crime-selector {
+  grid-area: selector; 
+}
+
+.crime-viewer {
+  grid-area: viewer; 
+}
+
+.crime-map {
+  grid-area: map;
+}
+
 .leaflet-container {
-  height: 600px;
-  width: 70%;
+  height: 800px;
 }

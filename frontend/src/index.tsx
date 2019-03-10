@@ -36,7 +36,7 @@ const store = createStore(
 
 const position: [number,number] = [51.049259, 13.73836]
 const map = (
-  <Map center={position} zoom={13}>
+  <Map center={position} zoom={13} className='crime-map'>
     <TileLayer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -49,10 +49,10 @@ const map = (
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
-      <CrimeSelector />
-      <CrimeViewer />
+    <div className='crime-main'>
       {map}
+      <CrimeSelector />
+      <CrimeViewer />      
     </div>
   </Provider>,
   document.getElementById('root') as HTMLElement

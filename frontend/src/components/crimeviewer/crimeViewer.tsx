@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ICrime, IStoreState } from 'src/components/types';
-import './crimeViewer.css';
 
 export interface IProps {
   crimes: ICrime[];
@@ -15,7 +14,7 @@ export function CrimeViewer({crimes}: IProps) {
     {crime.message}
     </li>)
   return (
-    <div>
+    <div className='crime-viewer'>
       <ul>
         {crimeList}
       </ul>      

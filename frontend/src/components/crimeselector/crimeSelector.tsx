@@ -11,7 +11,7 @@ interface IProps {
 
 function CrimeSelector({day, onNext, onPrevious}: IProps) {
   return (
-    <div>
+    <div className='crime-selector'>
       <div>
         <h2>{day}</h2>
         <button onClick={onPrevious}>previous</button>
