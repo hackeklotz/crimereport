@@ -32,11 +32,25 @@ const store = createStore(
   )
 );
 
+const position: [number,number] = [51.049259, 13.73836]
+const map = (
+  <Map center={position} zoom={13}>
+    <TileLayer
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+    />
+    <Marker position={position}>
+      <Popup>Crime XYZ</Popup>
+    </Marker>
+  </Map>
+)
+
 ReactDOM.render(
   <Provider store={store}>
     <div>
       <CrimeSelector />
       <CrimeViewer />
+      {map}
     </div>
   </Provider>,
   document.getElementById('root') as HTMLElement
