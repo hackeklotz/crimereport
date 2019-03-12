@@ -21,7 +21,9 @@ export function nextReport() {
         return dispatch(fetchAllReportIds()).then(() => {
             const reportIds = getState().allReportIds
             const currentReportId = getState().reportId
-            const nextReportId = reportIds[reportIds.indexOf(currentReportId) + 1]
+            let index = reportIds.indexOf(currentReportId) + 1
+            index = Math.min(reportIds.length - 1, index)
+            const nextReportId = reportIds[index]
             return dispatch(fetchReport(nextReportId));
         })
     };
@@ -32,7 +34,9 @@ export function previousReport() {
         return dispatch(fetchAllReportIds()).then(() => {
             const reportIds = getState().allReportIds
             const currentReportId = getState().reportId
-            const nextReportId = reportIds[reportIds.indexOf(currentReportId) - 1]
+            let index = reportIds.indexOf(currentReportId) - 1
+            index = Math.max(0, index)
+            const nextReportId = reportIds[index]
             return dispatch(fetchReport(nextReportId));
         })
     };
