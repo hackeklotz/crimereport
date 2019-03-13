@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
+import CrimeMap from 'src/components/crimemap/crimeMap';
 import CrimeSelector from 'src/components/crimeselector/crimeSelector';
 import CrimeViewer from 'src/components/crimeviewer/crimeViewer';
 import { ICrime } from 'src/components/types';
@@ -34,23 +34,10 @@ const store = createStore(
   )
 );
 
-const position: [number,number] = [51.049259, 13.73836]
-const map = (
-  <Map center={position} zoom={13} className='crime-map'>
-    <TileLayer
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-    />
-    <Marker position={position}>
-      <Popup>Crime XYZ</Popup>
-    </Marker>
-  </Map>
-)
-
 ReactDOM.render(
   <Provider store={store}>
     <div className='crime-main'>
-      {map}
+      <CrimeMap />
       <CrimeSelector />
       <CrimeViewer />      
     </div>
