@@ -9,6 +9,16 @@ export interface IProps {
 
 export function CrimeMap({ crimes }: IProps) {
     const position: [number, number] = [51.049259, 13.73836]
+    
+    const crimeList = crimes
+        .filter((crime) =>
+            crime.coordinate != null
+        )
+        .map((crime) =>
+            <Marker position={crime.coordinate} key={crime.id}>
+                <Popup>{crime.title}</Popup>
+            </Marker>
+        )
 
     return (
         <Map center={position} zoom={13} className='crime-map'>
@@ -16,9 +26,7 @@ export function CrimeMap({ crimes }: IProps) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             />
-            <Marker position={position}>
-                <Popup>Crime XYZ</Popup>
-            </Marker>
+            {crimeList}
         </Map>
     );
 }

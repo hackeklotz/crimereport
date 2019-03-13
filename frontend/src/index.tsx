@@ -13,8 +13,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 
-const crimesExample: ICrime[] = [{ id: 1, time: '18:00', place: 'Plauen', title: 'Raub', message: 'Raub in Plauen' },
-{ id: 2, time: '7:00', place: 'Cotta', title: 'Diebstahl', message: 'Diebstahl in Cotta' }]
+const crimesExample: ICrime[] = []
 
 const preloadedStore = {
   allReportIds: [],

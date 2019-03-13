@@ -10,5 +10,6 @@ export interface ICrime {
     time: string;
     place: string;
     title: string;
-    message: string
+    message: string;
+    coordinate: [number, number];
 }

@@ -130,9 +130,19 @@ export function selectReport(state: IStoreState, action: Action): IStoreState {
             {
                 const newCrimes: ICrime[] = []
                 action.posts.forEach((crime: any) => {
+                    
+                    let coordinate;
+                    if (crime.point != null) {
+                        coordinate = crime.point.coordinates;
+                    }
+
                     const newCrime = {
-                        id: 1, message: crime.message, place: crime.place,
-                        time: crime.time, title: crime.title
+                        coordinate,
+                        id: 1,
+                        message: crime.message,
+                        place: crime.place,
+                        time: crime.time,
+                        title: crime.title,                         
                     }
                     newCrimes.push(newCrime)
                 })
