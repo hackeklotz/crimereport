@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ICrime, IStoreState } from 'src/components/types';
+import './crimeViewer.css';
 
 export interface IProps {
   crimes: ICrime[];
@@ -8,17 +9,15 @@ export interface IProps {
 
 export function CrimeViewer({crimes}: IProps) {
   const crimeList = crimes.map((crime) => <li key={crime.id}>
-    <h3>{crime.title}</h3>
-    <h4>Zeit: {crime.time}</h4>
-    <h4>Ort: {crime.place}</h4>
-    {crime.message}
+    <h1>{crime.title}</h1>
+    <h2>Zeit: {crime.time}</h2>
+    <h2>Ort: {crime.place}</h2>
+    <p>{crime.message}</p>
     </li>)
-  return (
-    <div className='crime-viewer'>
-      <ul>
-        {crimeList}
-      </ul>      
-    </div>
+  return (    
+    <ul className='crime-viewer-list'>
+      {crimeList}
+    </ul>
   );
 }
 

@@ -1,0 +1,16 @@
+.crime-viewer-list {
+  list-style-type: none;
+  margin: 10px ;
+}
+
+.crime-viewer-list h1 {
+  font-size: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.crime-viewer-list h2 {
+  font-size: 1em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
