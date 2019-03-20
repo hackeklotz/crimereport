@@ -38,29 +38,3 @@ body {
 .leaflet-container {
   height: 800px;
 }
-
-.crime-selector-button {
-  background-color: transparent;
-  border: solid black;
-  border-width: 0 5px 5px 0;  
-  padding: 10px;
-  margin: 0px 20px 0px 20px;
-  cursor: pointer;
-}
-
-.crime-selector-button:hover {  
-  border: solid gray;
-  border-width: 0 5px 5px 0;        
-}
-
-.crime-selector-button:focus {  
-  outline: none;
-}
-
-.right {
-  transform: rotate(-45deg);  
-}
-
-.left {
-  transform: rotate(135deg);
-}
