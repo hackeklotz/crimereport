@@ -9,9 +9,7 @@ export interface IProps {
 
 export function CrimeViewer({crimes}: IProps) {
   const crimeList = crimes.map((crime) => <li key={crime.id}>
-    <h1>{crime.title}</h1>
-    <h2>Zeit: {crime.time}</h2>
-    <h2>Ort: {crime.place}</h2>
+    <h1>{crime.title}</h1>    
     <p>{crime.message}</p>
     </li>)
   return (    
