@@ -1,4 +1,5 @@
 parser/.idea/
+parser/.scrapy
 parser/build
 rest-service/bin/
 rest-service/build
