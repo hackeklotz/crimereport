@@ -14,7 +14,25 @@ class TestPoliceSpider(TestCase):
         spider = PoliceSpider()
         media_information = next(spider.parse_media_information(response))
 
-        self.assertEquals("MI_2019_63764", media_information["id"])
+        self.assertEqual("MI_2019_63764", media_information["id"])
+
+    def test_parse_number(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        self.assertEqual(206, media_information["number"])
+
+    def test_parse_year(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        self.assertEqual(2019, media_information["year"])
 
     def fake_response(self, file_name, url):
         request = Request(url=url)
