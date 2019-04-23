@@ -8,3 +8,10 @@ class MediaInformationItem(scrapy.Item):
     title = scrapy.Field()
     date = scrapy.Field()
     crimes = scrapy.Field()
+
+
+class CrimeItem(scrapy.Item):
+    title = scrapy.Field()
+    time = scrapy.Field()
+    place = scrapy.Field()
+    content = scrapy.Field()
