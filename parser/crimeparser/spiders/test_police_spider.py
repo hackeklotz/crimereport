@@ -34,7 +34,7 @@ class TestPoliceSpider(TestCase):
 
         self.assertEqual(2019, media_information["year"])
 
-    def test_parse_crimes(self):
+    def test_parse_crimes_length(self):
         response = self.fake_response("sample.html",
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
@@ -43,6 +43,36 @@ class TestPoliceSpider(TestCase):
 
         crimes = media_information["crimes"]
         self.assertEqual(10, len(crimes))
+
+    def test_parse_crimes_title(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        crime = media_information["crimes"][0]
+        self.assertEqual("Wohnungseinbruch", crime["title"])
+
+    def test_parse_crimes_time(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        crime = media_information["crimes"][0]
+        self.assertEqual("05.04.2019, 08.00 Uhr bis 12.30 Uhr", crime["time"])
+
+    def test_parse_crimes_place(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        crime = media_information["crimes"][0]
+        self.assertEqual("Dresden-Strehlen, Otto-Dix-Ring", crime["place"])
 
     def fake_response(self, file_name, url):
         request = Request(url=url)
