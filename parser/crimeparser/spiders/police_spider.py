@@ -64,7 +64,7 @@ class CrimeParser:
                 self.__assemble_and_append_crime(crimes, title, content)
 
             text = self.__remove_tags(part)
-            if state == ParserState.TITLE and not self.__isLandkreis(text):
+            if state == ParserState.TITLE and not self.__is_landkreis(text):
                 title.append(text)
             elif state == ParserState.CONTENT:
                 content.append(text)
@@ -79,7 +79,7 @@ class CrimeParser:
     def __remove_tags(self, html_text):
         return re.sub("<.*?>", "", html_text).strip()
 
-    def __isLandkreis(self, text):
+    def __is_landkreis(self, text):
         return (text == "Landeshauptstadt Dresden"
                 or text == "Landkreis Meißen"
                 or text == "Landkreis Sächsische Schweiz-Osterzgebirge")
@@ -90,17 +90,22 @@ class CrimeParser:
 
         time = None
         place = None
-        for text in content:
-            time = self.__extract_text_after_prefix(time, text, "Zeit:")
-            place = self.__extract_text_after_prefix(place, text, "Ort:")
+        for text in content[:]:
+            time = self.__extract_text_after_prefix(time, text, "Zeit:", content)
+            place = self.__extract_text_after_prefix(place, text, "Ort:", content)
 
-        crimes.append(CrimeItem(title=title[0], time=time, place=place))
+        content_text = None
+        if content:
+            content_text = "\n".join(content)
+
+        crimes.append(CrimeItem(title=title[0], time=time, place=place, content=content_text))
         title.clear()
         content.clear()
 
-    def __extract_text_after_prefix(self, old_text, text, prefix):
+    def __extract_text_after_prefix(self, old_text, text, prefix, content):
         if text.startswith(prefix):
             old_text = text[len(prefix):].strip()
+            content.remove(text)
         return old_text
 
 
