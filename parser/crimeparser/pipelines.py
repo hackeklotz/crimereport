@@ -37,7 +37,7 @@ class DatabasePipeline(object):
         cursor = self.__connection.cursor()
 
         cursor.execute('''
-                    INSERT OR REPLACE INTO parameters ('id', 'year', 'number', 'title', 'date')
+                    INSERT OR REPLACE INTO report ('id', 'year', 'number', 'title', 'date')
                     VALUES (?, ?, ?, ?, ?)''', parameters)
 
         cursor.executemany('''
