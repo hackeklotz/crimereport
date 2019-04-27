@@ -12,36 +12,36 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        self.assertEqual("MI_2019_63764", media_information["id"])
+        self.assertEqual("MI_2019_63764", report["id"])
 
     def test_parse_number(self):
         response = self.fake_response("sample.html",
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        self.assertEqual(206, media_information["number"])
+        self.assertEqual(206, report["number"])
 
     def test_parse_year(self):
         response = self.fake_response("sample.html",
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        self.assertEqual(2019, media_information["year"])
+        self.assertEqual(2019, report["year"])
 
     def test_parse_crimes_length(self):
         response = self.fake_response("sample.html",
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crimes = media_information["crimes"]
+        crimes = report["crimes"]
         self.assertEqual(10, len(crimes))
 
     def test_parse_crimes_title(self):
@@ -49,9 +49,9 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][0]
+        crime = report["crimes"][0]
         self.assertEqual("Wohnungseinbruch", crime["title"])
 
     def test_parse_crimes_title2(self):
@@ -59,11 +59,11 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63837.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][1]
+        crime = report["crimes"][1]
         self.assertEqual("Infostand beschädigt – Mann leicht verletzt", crime["title"])
-        crime = media_information["crimes"][7]
+        crime = report["crimes"][7]
         self.assertEqual("Verkehrsunfall", crime["title"])
 
     def test_parse_crimes_time(self):
@@ -71,9 +71,9 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][0]
+        crime = report["crimes"][0]
         self.assertEqual("05.04.2019, 08.00 Uhr bis 12.30 Uhr", crime["time"])
 
     def test_parse_crimes_place(self):
@@ -81,9 +81,9 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][0]
+        crime = report["crimes"][0]
         self.assertEqual("Dresden-Strehlen, Otto-Dix-Ring", crime["place"])
 
     def test_parse_crimes_content(self):
@@ -91,9 +91,9 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][0]
+        crime = report["crimes"][0]
         content = crime["content"]
         self.assertTrue(content.startswith("Unbekannte"))
         self.assertTrue(content.endswith("beziffert."))
@@ -103,9 +103,9 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63837.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][0]
+        crime = report["crimes"][0]
         content = crime["content"]
         self.assertTrue(content.startswith("Gestern Nachmittag"))
         self.assertTrue(content.endswith("entgegen. (ml)"))
@@ -115,9 +115,9 @@ class TestPoliceSpider(TestCase):
                                       "https://www.polizei.sachsen.de/de/MI_2019_63837.htm")
 
         spider = PoliceSpider()
-        media_information = next(spider.parse_media_information(response))
+        report = next(spider.parse_report(response))
 
-        crime = media_information["crimes"][7]
+        crime = report["crimes"][7]
         content = crime["content"]
         self.assertTrue(content.startswith("Am Dienstagnachmittag kam"))
         self.assertTrue(content.endswith("von rund 7.100 Euro. (lr)"))

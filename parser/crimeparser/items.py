@@ -1,7 +1,7 @@
 import scrapy
 
 
-class MediaInformationItem(scrapy.Item):
+class ReportItem(scrapy.Item):
     id = scrapy.Field()
     year = scrapy.Field()
     number = scrapy.Field()

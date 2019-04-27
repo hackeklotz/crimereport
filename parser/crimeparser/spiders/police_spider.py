@@ -2,7 +2,7 @@ import re
 import scrapy
 from enum import Enum
 
-from items import MediaInformationItem, CrimeItem
+from items import ReportItem, CrimeItem
 
 
 class PoliceSpider(scrapy.Spider):
@@ -15,10 +15,10 @@ class PoliceSpider(scrapy.Spider):
     def parse(self, response):
         links = response.css("div[id='presse'] a::attr(href)")
         for href in links:
-            yield response.follow(href, self.parse_media_information)
+            yield response.follow(href, self.parse_report)
 
-    def parse_media_information(self, response):
-        media_id = self.extract_unique_id(response.url)
+    def parse_report(self, response):
+        report_id = self.extract_unique_id(response.url)
 
         content = response.css("div[id='content']").get()
         parts = content.split("<br>")
@@ -29,7 +29,7 @@ class PoliceSpider(scrapy.Spider):
         number, year = crime_parser.extract_number_and_year()
         crimes = crime_parser.extract_crimes()
 
-        yield MediaInformationItem(id=media_id, number=number, year=year, crimes=crimes)
+        yield ReportItem(id=report_id, number=number, year=year, crimes=crimes)
 
     def extract_unique_id(self, url):
         temp = url.rpartition('.')[0]
