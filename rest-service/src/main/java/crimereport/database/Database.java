@@ -53,18 +53,19 @@ public class Database {
 		}
 	}
 
-	public List<Crime> getReport(int id) {
+	public List<Crime> getReport(String id) {
 		LOGGER.info("Retrieve report with ID " + id);
 		try (Connection conn = DriverManager.getConnection(url)) {
 			DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
-			Result<Record> result = create.select().from("crime").where("reportID = " + id).fetch();
+			Result<Record> result = create.select().from("crime")
+					.where(String.format("reportId = \"%s\"", id)).fetch();
 
 			List<Crime> crimes = new ArrayList<>();
 			for (Record record : result) {
 				Crime crime = buildCrime(record);
 				crimes.add(crime);
-			}
-			return crimes;
+      }
+      return crimes;
 		} catch (SQLException e) {
 			LOGGER.error("Couldn't retrieve crimes", e);
 			return new ArrayList<>();
@@ -85,15 +86,15 @@ public class Database {
 		return crimeBuilder.build();
 	}
 
-	public TreeSet<Integer> getAllReportIds() {
+	public TreeSet<String> getAllReportIds() {
 		LOGGER.info("Retrieve all report IDs");
 		try (Connection conn = DriverManager.getConnection(url)) {
 			DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
 			Result<Record> result = create.select().from("crime").fetch();
 
-			TreeSet<Integer> reportIds = new TreeSet<>();
+			TreeSet<String> reportIds = new TreeSet<>();
 			for (Record record : result) {
-				reportIds.add(record.get("reportId", Integer.class));
+				reportIds.add(record.get("reportId", String.class));
 			}
 			return reportIds;
 		} catch (SQLException e) {

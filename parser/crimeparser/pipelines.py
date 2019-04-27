@@ -4,17 +4,17 @@ import sqlite3
 class DatabasePipeline(object):
 
     def open_spider(self, spider):
-        self.__connection = sqlite3.connect('crimes2019.sq3')
+        self.__connection = sqlite3.connect('../crimes2019.sq3')
         self.__init_database()
 
     def __init_database(self):
         cursor = self.__connection.cursor()
 
-        create_query = '''CREATE TABLE IF NOT EXISTS report (id int, year int, number int, title text, date text,
+        create_query = '''CREATE TABLE IF NOT EXISTS report (id text, year int, number int, title text, date text,
                               PRIMARY KEY (id))'''
         cursor.execute(create_query)
 
-        create_query = '''CREATE TABLE IF NOT EXISTS crime (reportId int, id int, title text, date text, place text,
+        create_query = '''CREATE TABLE IF NOT EXISTS crime (reportId text, id int, title text, date text, place text,
                               message text, latitude double, longitude double,
                               PRIMARY KEY (reportID, id))'''
         cursor.execute(create_query)

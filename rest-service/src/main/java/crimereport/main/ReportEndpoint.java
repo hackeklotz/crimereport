@@ -30,15 +30,15 @@ public class ReportEndpoint {
 	@GET
 	@Path("/list")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Integer> getAllReportIds() {
-		TreeSet<Integer> reportIds = database.getAllReportIds();
-		return new ArrayList<Integer>(reportIds);
+	public List<String> getAllReportIds() {
+		TreeSet<String> reportIds = database.getAllReportIds();
+		return new ArrayList<String>(reportIds);
 	}
 
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Crime> getReport(@PathParam("id") int id) {
+	public List<Crime> getReport(@PathParam("id") String id) {
 		return database.getReport(id);
 	}
 
