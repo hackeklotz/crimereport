@@ -59,14 +59,15 @@ class CrimeParser:
         content = []
 
         for part in self.__parts:
-            if "<strong>" in part:
+            # title are in strong tags, appeal for witnesses additionally in em tags
+            if "<strong>" in part and not "<em>" in part:
                 state = ParserState.TITLE
                 self.__assemble_and_append_crime(crimes, title, content)
 
             text = self.__remove_tags(part)
             if state == ParserState.TITLE and not self.__is_landkreis(text):
                 title.append(text)
-            elif state == ParserState.CONTENT:
+            elif state == ParserState.CONTENT and '<ul class="verweisliste">' not in part:
                 content.append(text)
 
             if "</strong>" in part:

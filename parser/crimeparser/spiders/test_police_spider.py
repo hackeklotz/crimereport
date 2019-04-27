@@ -54,6 +54,18 @@ class TestPoliceSpider(TestCase):
         crime = media_information["crimes"][0]
         self.assertEqual("Wohnungseinbruch", crime["title"])
 
+    def test_parse_crimes_title2(self):
+        response = self.fake_response("sample2.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63837.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        crime = media_information["crimes"][1]
+        self.assertEqual("Infostand beschädigt – Mann leicht verletzt", crime["title"])
+        crime = media_information["crimes"][7]
+        self.assertEqual("Verkehrsunfall", crime["title"])
+
     def test_parse_crimes_time(self):
         response = self.fake_response("sample.html",
                                       "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
@@ -85,6 +97,30 @@ class TestPoliceSpider(TestCase):
         content = crime["content"]
         self.assertTrue(content.startswith("Unbekannte"))
         self.assertTrue(content.endswith("beziffert."))
+
+    def test_parse_crimes_content_include_appeal_for_witnesses(self):
+        response = self.fake_response("sample2.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63837.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        crime = media_information["crimes"][0]
+        content = crime["content"]
+        self.assertTrue(content.startswith("Gestern Nachmittag"))
+        self.assertTrue(content.endswith("entgegen. (ml)"))
+
+    def test_parse_crimes_content_exclude_appendix(self):
+        response = self.fake_response("sample2.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63837.htm")
+
+        spider = PoliceSpider()
+        media_information = next(spider.parse_media_information(response))
+
+        crime = media_information["crimes"][7]
+        content = crime["content"]
+        self.assertTrue(content.startswith("Am Dienstagnachmittag kam"))
+        self.assertTrue(content.endswith("von rund 7.100 Euro. (lr)"))
 
     def fake_response(self, file_name, url):
         request = Request(url=url)
