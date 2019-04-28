@@ -18,3 +18,6 @@ class CrimeItem(scrapy.Item):
     time = scrapy.Field()
     place = scrapy.Field()
     content = scrapy.Field()
+
+    latitude = scrapy.Field()
+    longitude = scrapy.Field()

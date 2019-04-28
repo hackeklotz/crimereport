@@ -61,7 +61,8 @@ class DatabasePipeline(object):
         crimes_to_insert = []
 
         for i, crime in enumerate(item["crimes"]):
-            parameters = (item["id"], i, crime["title"], crime["time"], crime["place"], crime["content"], None, None)
+            parameters = (item["id"], i, crime["title"], crime["time"], crime["place"], crime["content"],
+                          crime["latitude"], crime["longitude"])
             crimes_to_insert.append(parameters)
 
         parameters = (item["id"], item["year"], item["number"], None, None)
