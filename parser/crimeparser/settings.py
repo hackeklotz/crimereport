@@ -63,6 +63,7 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    'crimeparser.pipelines.SkipReportPipeline': 100,
     'crimeparser.pipelines.DatabasePipeline': 300,
 }
 

@@ -1,5 +1,30 @@
 import sqlite3
 
+from scrapy.exceptions import DropItem
+
+
+class SkipReportPipeline(object):
+    @classmethod
+    def from_crawler(cls, crawler):
+        database_path = crawler.settings.get("DATABASE_PATH")
+        reprocess_reports = crawler.settings.getbool("REPROCESS_REPORTS")
+        return cls(database_path, reprocess_reports)
+
+    def __init__(self, database_path, reprocess_reports):
+        self.__reprocess_reports = reprocess_reports
+        self.__connection = sqlite3.connect(database_path)
+
+    def process_item(self, item, spider):
+        if self.__reprocess_reports:
+            return item
+
+        cursor = self.__connection.cursor()
+
+        for _row in cursor.execute(f"SELECT id FROM report WHERE id='{item['id']}'"):
+            raise DropItem("Already processed.")
+
+        return item
+
 
 class DatabasePipeline(object):
 
