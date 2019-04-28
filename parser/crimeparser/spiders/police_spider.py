@@ -29,7 +29,7 @@ class PoliceSpider(scrapy.Spider):
         number, year = crime_parser.extract_number_and_year()
         crimes = crime_parser.extract_crimes()
 
-        yield ReportItem(id=report_id, number=number, year=year, crimes=crimes)
+        yield ReportItem(id=report_id, number=number, year=year, title=None, crimes=crimes)
 
     def extract_unique_id(self, url):
         temp = url.rpartition('.')[0]
