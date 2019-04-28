@@ -3,8 +3,15 @@ import sqlite3
 
 class DatabasePipeline(object):
 
+    @classmethod
+    def from_crawler(cls, crawler):
+        database_path = crawler.settings.get("DATABASE_PATH")
+        return cls(database_path)
+
+    def __init__(self, database_path):
+        self.__connection = sqlite3.connect(database_path)
+
     def open_spider(self, spider):
-        self.__connection = sqlite3.connect('../crimes2019.sq3')
         self.__init_database()
 
     def __init_database(self):
