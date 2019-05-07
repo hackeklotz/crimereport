@@ -4,11 +4,11 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import CrimeMap from 'src/components/crimemap/crimeMap';
-import CrimeSelector from 'src/components/crimeselector/crimeSelector';
-import CrimeViewer from 'src/components/crimeviewer/crimeViewer';
-import { ICrime } from 'src/components/types';
-import rootReducer from './components/crimeselector/crimeSelectorRedux';
+import CrimeMap from 'components/crimemap/crimeMap';
+import CrimeSelector from 'components/crimeselector/crimeSelector';
+import CrimeViewer from 'components/crimeviewer/crimeViewer';
+import { ICrime } from 'components/types';
+import rootReducer from 'components/crimeselector/crimeSelectorRedux';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 

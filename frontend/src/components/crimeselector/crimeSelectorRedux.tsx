@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { ICrime, IStoreState } from 'src/components/types';
+import { ICrime, IStoreState } from 'components/types';
 
 // actions
 export enum ActionTypes {
@@ -124,7 +124,7 @@ export function fetchAllReportIds(): any {
 type Action = IReceiveReport | IReceiveReportIds
 
 // reducers
-export function selectReport(state: IStoreState, action: Action): IStoreState {
+export function selectReport(state: any, action: Action): IStoreState {
     switch (action.type) {
         case ActionTypes.RECEIVE_REPORT:
             {

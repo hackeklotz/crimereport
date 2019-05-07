@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { IStoreState } from 'src/components/types';
+import { IStoreState } from 'components/types';
 import './crimeSelector.css';
 import { nextReport, previousReport } from './crimeSelectorRedux';
 

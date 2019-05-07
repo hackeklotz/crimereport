@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
-import { ICrime, IStoreState } from '../types';
+import { ICrime, IStoreState } from 'components/types';
 
 export interface IProps {
     crimes: ICrime[];
