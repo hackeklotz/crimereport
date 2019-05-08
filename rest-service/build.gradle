@@ -1,19 +1,12 @@
-buildscript {
-	ext {
-		springBootVersion = '1.5.20.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath 'org.owasp:dependency-check-gradle:5.0.0-M3.1'
-	}
+plugins {
+	id "org.springframework.boot" version "2.1.4.RELEASE"
+	id "org.owasp.dependencycheck" version "5.0.0-M3.1"
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.owasp.dependencycheck'
 
 jar {
@@ -27,13 +20,10 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-jersey'
     compile 'org.jooq:jooq:3.11.11'    
     compile 'org.xerial:sqlite-jdbc:3.27.2.1'
     compile 'org.apache.logging.log4j:log4j-api:2.11.2'
     compile 'org.apache.logging.log4j:log4j-core:2.11.2'
-	
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
