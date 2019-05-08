@@ -1,11 +1,11 @@
-from geopy import Nominatim
+from geopy import Nominatim, Photon
 from geopy.extra.rate_limiter import RateLimiter
 
 
 class GeoCodePipeline(object):
 
     def open_spider(self, spider):
-        geolocator = Nominatim(timeout=5)
+        geolocator = Photon(timeout=5)
         self.__geocodeFunc = RateLimiter(geolocator.geocode, min_delay_seconds=2)
 
     def process_item(self, item, spider):
