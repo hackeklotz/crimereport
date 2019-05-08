@@ -8,9 +8,14 @@ from items import ReportItem, CrimeItem
 class PoliceSpider(scrapy.Spider):
     name = "police"
 
-    start_urls = [
-        "https://www.polizei.sachsen.de/de/medieninformationen_pdd.htm"
-    ]
+    def start_requests(self):
+        urls = [
+            "https://www.polizei.sachsen.de/de/medieninformationen_pdd.htm"
+        ]
+        for url in urls:
+            request = scrapy.Request(url=url, callback=self.parse)
+            request.meta['dont_cache'] = True
+            yield request
 
     def parse(self, response):
         links = response.css("div[id='presse'] a::attr(href)")
