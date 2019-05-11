@@ -74,7 +74,7 @@ export function fetchReport(reportId: number): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestReport(reportId))
 
-        return fetch(`http://localhost:9090/reports/${reportId}`)
+        return fetch(`/reports/${reportId}`)
             .then(
                 response => response.json(),
                 error => console.log('An error occurred.', error)
@@ -112,7 +112,7 @@ export function fetchAllReportIds(): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestAllReportIds())
 
-        return fetch(`http://localhost:9090/reports/list`)
+        return fetch(`/reports/list`)
             .then(
                 response => response.json(),
                 error => console.log('An error occurred.', error)
