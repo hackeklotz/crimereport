@@ -31,3 +31,4 @@ bootJar {
 	}
     baseName = "$rootProject.name"
 }
+bootJar.dependsOn(':frontend:assemble')
