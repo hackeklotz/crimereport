@@ -29,4 +29,5 @@ bootJar {
 	from('../frontend/build') {
 		into 'BOOT-INF/classes/static'
 	}
+    baseName = "$rootProject.name"
 }
