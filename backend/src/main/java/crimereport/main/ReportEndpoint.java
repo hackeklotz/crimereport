@@ -3,19 +3,16 @@ package crimereport.main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import crimereport.crimes.Crime;
 import crimereport.database.Database;
 
-@Path("/reports")
+@RestController
+@RequestMapping("/reports")
 public class ReportEndpoint {
 
 	private Database database;
@@ -27,18 +24,14 @@ public class ReportEndpoint {
 		this.database = database;
 	}
 
-	@GET
-	@Path("/list")
-	@Produces(MediaType.APPLICATION_JSON)
+	@RequestMapping(path = "/list", method = RequestMethod.GET)
 	public List<String> getAllReportIds() {
 		TreeSet<String> reportIds = database.getAllReportIds();
 		return new ArrayList<String>(reportIds);
 	}
-
-	@GET
-	@Path("{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Crime> getReport(@PathParam("id") String id) {
+	
+	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	public List<Crime> getReport(@PathVariable String id) {
 		return database.getReport(id);
 	}
 
