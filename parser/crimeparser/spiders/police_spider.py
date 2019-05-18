@@ -2,7 +2,7 @@ import re
 import scrapy
 from enum import Enum
 
-from items import ReportItem, CrimeItem
+from crimeparser.items import ReportItem, CrimeItem
 
 
 class PoliceSpider(scrapy.Spider):

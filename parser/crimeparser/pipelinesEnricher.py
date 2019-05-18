@@ -1,4 +1,4 @@
-from geopy import Nominatim, Photon
+from geopy import Photon
 from geopy.extra.rate_limiter import RateLimiter
 
 

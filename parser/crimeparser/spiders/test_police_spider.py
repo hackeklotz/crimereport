@@ -3,7 +3,7 @@ from unittest import TestCase
 from scrapy.http import Request, HtmlResponse
 
 from conftest import RESOURCE_DIR
-from spiders.police_spider import PoliceSpider
+from crimeparser.spiders.police_spider import PoliceSpider
 
 
 class TestPoliceSpider(TestCase):
