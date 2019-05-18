@@ -24,5 +24,6 @@ npm_run_build {
     outputs.dir 'build'    
 }
 
+npm_run_start.dependsOn(npm_install)
 npm_run_build.dependsOn(npm_install)
 assemble.dependsOn(npm_run_build)
