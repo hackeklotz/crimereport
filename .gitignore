@@ -1,2 +1,4 @@
 /.gradle
+.settings 
+.project
 /crimes*.sq3
