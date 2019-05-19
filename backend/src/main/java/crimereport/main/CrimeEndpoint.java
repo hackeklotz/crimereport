@@ -9,6 +9,7 @@ import crimereport.crimes.Crime;
 import crimereport.database.Database;
 
 @RestController
+@RequestMapping("/api/crimes/")
 public class CrimeEndpoint {
 
 	private Database database;
@@ -20,7 +21,7 @@ public class CrimeEndpoint {
 		this.database = database;
 	}
 
-	@RequestMapping(path = "/crimes", method = RequestMethod.GET)
+	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public List<Crime> getCrimes() {
 		return database.getCrimes();
 	}

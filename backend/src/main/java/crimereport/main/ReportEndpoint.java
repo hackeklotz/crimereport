@@ -12,7 +12,7 @@ import crimereport.crimes.Crime;
 import crimereport.database.Database;
 
 @RestController
-@RequestMapping("/reports")
+@RequestMapping("/api/reports")
 public class ReportEndpoint {
 
 	private Database database;
@@ -24,7 +24,7 @@ public class ReportEndpoint {
 		this.database = database;
 	}
 
-	@RequestMapping(path = "/list", method = RequestMethod.GET)
+	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public List<String> getAllReportIds() {
 		TreeSet<String> reportIds = database.getAllReportIds();
 		return new ArrayList<String>(reportIds);
