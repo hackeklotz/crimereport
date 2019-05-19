@@ -153,8 +153,9 @@ export function selectReport(state: any, action: Action): IStoreState {
             {
                 return { ...state, allReportIds: action.allReportIds };
             }
+        default:
+            return state;            
     }
-    return state;
 }
 
 export default selectReport
