@@ -1,0 +1,14 @@
+image: java:8
+
+stages:
+  - build
+  - test
+  - deploy
+  
+build:
+  stage: build
+  script: ./gradlew assemble
+
+test:
+  stage: test
+  script: ./gradlew build
