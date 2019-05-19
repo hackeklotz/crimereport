@@ -9,7 +9,7 @@ node {
   download = true
 }
 
-npm_install {    
+npmInstall {    
     inputs.file 'package.json'
     inputs.file 'package-lock.json'
     outputs.dir 'node_modules'
@@ -24,6 +24,6 @@ npm_run_build {
     outputs.dir 'build'    
 }
 
-npm_run_start.dependsOn(npm_install)
-npm_run_build.dependsOn(npm_install)
+npm_run_start.dependsOn(npmInstall)
+npm_run_build.dependsOn(npmInstall)
 assemble.dependsOn(npm_run_build)
