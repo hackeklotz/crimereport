@@ -2,20 +2,25 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { IStoreState } from 'components/types';
 import './crimeSelector.css';
-import { nextReport, previousReport } from './crimeSelectorRedux';
+import { lastReport, nextReport, previousReport } from './crimeSelectorRedux';
+import { useEffect } from 'react';
 
 interface IProps {
   reportId: number;
+  onInit: () => void;
   onNext: () => void;
   onPrevious: () => void;
 }
 
-function CrimeSelector({reportId, onNext, onPrevious}: IProps) {
+
+function CrimeSelector({ reportId, onInit, onNext, onPrevious }: IProps) {
+  useEffect(() => { onInit(); }, [])
+
   return (
     <div className='crime-selector'>
-        <button onClick={onPrevious} className="crime-selector-button left"/>
-        {reportId}
-        <button onClick={onNext} className="crime-selector-button right"/>
+      <button onClick={onPrevious} className="crime-selector-button left" />
+      {reportId}
+      <button onClick={onNext} className="crime-selector-button right" />
     </div>
   );
 }
@@ -28,10 +33,11 @@ function mapStateToProps({ reportId }: IStoreState) {
   }
 }
 
-function mapDispatchToProps(dispatch: any,) {
+function mapDispatchToProps(dispatch: any, ) {
   return {
-      onNext: () => dispatch(nextReport()),
-      onPrevious: () => dispatch(previousReport()),
+    onNext: () => dispatch(nextReport()),
+    onPrevious: () => dispatch(previousReport()),
+    onInit: () => dispatch(lastReport()),
   }
 }
 

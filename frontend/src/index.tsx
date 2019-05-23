@@ -7,25 +7,19 @@ import thunkMiddleware from 'redux-thunk';
 import CrimeMap from 'components/crimemap/crimeMap';
 import CrimeSelector from 'components/crimeselector/crimeSelector';
 import CrimeViewer from 'components/crimeviewer/crimeViewer';
-import { ICrime } from 'components/types';
 import rootReducer from 'components/crimeselector/crimeSelectorRedux';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-
-const crimesExample: ICrime[] = []
-
 const preloadedStore = {
   allReportIds: [],
-  crimes: crimesExample,
-  day: 'today0',
-  reportId: 46970  
+  crimes: [],
 }
 
 const loggerMiddleware = createLogger()
 
 const store = createStore(
-  rootReducer,  
+  rootReducer,
   preloadedStore,
   applyMiddleware(
     thunkMiddleware,
@@ -38,7 +32,7 @@ ReactDOM.render(
     <div className='crime-main'>
       <CrimeMap />
       <CrimeSelector />
-      <CrimeViewer />      
+      <CrimeViewer />
     </div>
   </Provider>,
   document.getElementById('root') as HTMLElement

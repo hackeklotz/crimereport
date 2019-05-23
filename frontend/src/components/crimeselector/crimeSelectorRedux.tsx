@@ -42,6 +42,16 @@ export function previousReport() {
     };
 }
 
+export function lastReport() {
+    return (dispatch: Dispatch<any>, getState: () => IStoreState) => {
+        return dispatch(fetchAllReportIds()).then(() => {
+            const reportIds = getState().allReportIds
+            let index = reportIds[reportIds.length - 1]
+            return dispatch(fetchReport(index));
+        })
+    };
+}
+
 export interface IFetchReport {
     type: string,
     reportId: number
@@ -130,7 +140,7 @@ export function selectReport(state: any, action: Action): IStoreState {
             {
                 const newCrimes: ICrime[] = []
                 action.posts.forEach((crime: any) => {
-                    
+
                     let coordinate;
                     if (crime.point != null) {
                         coordinate = crime.point.coordinates;
@@ -142,7 +152,7 @@ export function selectReport(state: any, action: Action): IStoreState {
                         message: crime.message,
                         place: crime.place,
                         time: crime.time,
-                        title: crime.title,                         
+                        title: crime.title,
                     }
                     newCrimes.push(newCrime)
                 })
@@ -154,7 +164,7 @@ export function selectReport(state: any, action: Action): IStoreState {
                 return { ...state, allReportIds: action.allReportIds };
             }
         default:
-            return state;            
+            return state;
     }
 }
 
