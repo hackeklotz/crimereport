@@ -1,3 +1,5 @@
+from os import terminal_size
+
 import re
 import scrapy
 from enum import Enum
@@ -62,14 +64,18 @@ class CrimeParser:
         state = ParserState.NONE
         title = []
         content = []
+        region = None
 
         for part in self.__parts:
             # title are in strong tags, appeal for witnesses additionally in em tags
             if "<strong>" in part and not "<em>" in part:
                 state = ParserState.TITLE
-                self.__assemble_and_append_crime(crimes, title, content)
+                self.__assemble_and_append_crime(crimes, title, content, region)
 
             text = self.__remove_tags(part)
+            if self.__is_landkreis(text):
+                region = text
+
             if state == ParserState.TITLE and not self.__is_landkreis(text):
                 title.append(text)
             elif state == ParserState.CONTENT and '<ul class="verweisliste">' not in part:
@@ -78,7 +84,7 @@ class CrimeParser:
             if "</strong>" in part:
                 state = ParserState.CONTENT
 
-        self.__assemble_and_append_crime(crimes, title, content)
+        self.__assemble_and_append_crime(crimes, title, content, region)
 
         return crimes
 
@@ -90,7 +96,12 @@ class CrimeParser:
                 or text == "Landkreis Meißen"
                 or text == "Landkreis Sächsische Schweiz-Osterzgebirge")
 
-    def __assemble_and_append_crime(self, crimes, title, content):
+    def __remove_prefix(self, text, prefix):
+        if text.startswith(prefix):
+            return text[len(prefix):]
+        return text
+
+    def __assemble_and_append_crime(self, crimes, title, content, region):
         if not (title and content):
             return
 
@@ -104,7 +115,7 @@ class CrimeParser:
         if content:
             content_text = "\n".join(content)
 
-        crimes.append(CrimeItem(title=title[0], time=time, place=place, content=content_text))
+        crimes.append(CrimeItem(title=title[0], time=time, place=place, content=content_text, region=region))
         title.clear()
         content.clear()
 

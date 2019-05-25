@@ -19,5 +19,6 @@ class CrimeItem(scrapy.Item):
     place = scrapy.Field()
     content = scrapy.Field()
 
+    region = scrapy.Field()
     latitude = scrapy.Field()
     longitude = scrapy.Field()

@@ -46,8 +46,8 @@ class DatabasePipeline(object):
                               PRIMARY KEY (id))'''
         cursor.execute(create_query)
 
-        create_query = '''CREATE TABLE IF NOT EXISTS crime (reportId text, id int, title text, date text, place text,
-                              message text, latitude double, longitude double,
+        create_query = '''CREATE TABLE IF NOT EXISTS crime (reportId text, id int, title text, date text, region text,
+                              place text, message text, latitude double, longitude double,
                               PRIMARY KEY (reportID, id))'''
         cursor.execute(create_query)
 
@@ -61,8 +61,8 @@ class DatabasePipeline(object):
         crimes_to_insert = []
 
         for i, crime in enumerate(item["crimes"]):
-            parameters = (item["id"], i, crime["title"], crime["time"], crime["place"], crime["content"],
-                          crime["latitude"], crime["longitude"])
+            parameters = (item["id"], i, crime["title"], crime["time"], crime["region"], crime["place"],
+                          crime["content"], crime["latitude"], crime["longitude"])
             crimes_to_insert.append(parameters)
 
         parameters = (item["id"], item["year"], item["number"], None, None)
@@ -74,9 +74,9 @@ class DatabasePipeline(object):
                     VALUES (?, ?, ?, ?, ?)''', parameters)
 
         cursor.executemany('''
-                    INSERT OR REPLACE INTO crime ('reportId', 'id', 'title', 'date', 'place', 'message',
+                    INSERT OR REPLACE INTO crime ('reportId', 'id', 'title', 'date', 'region', 'place', 'message',
                     'latitude', 'longitude')
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', crimes_to_insert)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', crimes_to_insert)
 
         self.__connection.commit()
 

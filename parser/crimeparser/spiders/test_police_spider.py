@@ -122,6 +122,26 @@ class TestPoliceSpider(TestCase):
         self.assertTrue(content.startswith("Am Dienstagnachmittag kam"))
         self.assertTrue(content.endswith("von rund 7.100 Euro. (lr)"))
 
+    def test_parse_crimes_region_dresden(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        report = next(spider.parse_report(response))
+
+        crime = report["crimes"][0]
+        self.assertEqual("Landeshauptstadt Dresden", crime["region"])
+
+    def test_parse_crimes_region_meissen(self):
+        response = self.fake_response("sample.html",
+                                      "https://www.polizei.sachsen.de/de/MI_2019_63764.htm")
+
+        spider = PoliceSpider()
+        report = next(spider.parse_report(response))
+
+        crime = report["crimes"][7]
+        self.assertEqual("Landkreis Meißen", crime["region"])
+
     def fake_response(self, file_name, url):
         request = Request(url=url)
         file_path = RESOURCE_DIR.joinpath(file_name)
