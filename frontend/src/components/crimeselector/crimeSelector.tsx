@@ -14,7 +14,7 @@ interface IProps {
 
 
 function CrimeSelector({ reportId, onInit, onNext, onPrevious }: IProps) {
-  useEffect(() => { onInit(); }, [])
+  useEffect(() => { onInit(); }, [onInit])
 
   return (
     <div className='crime-selector'>
