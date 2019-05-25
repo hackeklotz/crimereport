@@ -9,18 +9,16 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - gradle-{{ checksum "frontend/build.gradle" }}-{{ checksum "backend/build.gradle" }}
+            - gradle-
 
       - run: gradle dependencies
 
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+          key: - gradle-{{ checksum "frontend/build.gradle" }}-{{ checksum "backend/build.gradle" }}
 
-      - run: gradle build
+      - run: ./gradlew clean build
