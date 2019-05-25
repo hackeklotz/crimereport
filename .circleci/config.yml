@@ -19,6 +19,6 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: - gradle-{{ checksum "frontend/build.gradle" }}-{{ checksum "backend/build.gradle" }}
+          key: gradle-{{ checksum "frontend/build.gradle" }}-{{ checksum "backend/build.gradle" }}
 
       - run: ./gradlew clean build
