@@ -35,7 +35,9 @@ jobs:
       
     steps:
       - checkout
-      - run: pipenv install
+      - run: |
+          cd parser
+          pipenv install
       - run: pipenv run pytest
       
 workflows:
