@@ -3,9 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:8-jdk
-
-    working_directory: ~/repo
-
+      
     steps:
       - checkout
 
@@ -30,3 +28,19 @@ jobs:
           paths:
             - frontend/node_modules
           key: npm-{{ checksum "frontend/package-lock.json" }}
+          
+  test_parser:
+    docker:
+      - image: circleci/python:3.7.3
+      
+    setps:
+      - checkout
+      - run: pipenv install
+      - run: pipenv run pytest
+      
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test_parser
