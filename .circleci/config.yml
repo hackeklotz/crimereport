@@ -33,7 +33,7 @@ jobs:
     docker:
       - image: circleci/python:3.7.3
       
-    setps:
+    steps:
       - checkout
       - run: pipenv install
       - run: pipenv run pytest
