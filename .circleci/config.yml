@@ -38,7 +38,9 @@ jobs:
       - run: |
           cd parser
           pipenv install --dev
-      - run: pipenv run pytest
+      - run: |
+          cd parser
+          pipenv run pytest
       
 workflows:
   version: 2
