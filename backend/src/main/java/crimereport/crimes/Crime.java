@@ -2,58 +2,67 @@ package crimereport.crimes;
 
 public class Crime {
 
-	private String title;
-	private String message;
-	private String place;
-	private String time;
-	private Geometry point;
+  private String title;
+  private String message;
+  private String region;
+  private String place;
+  private String time;
+  private Geometry point;
 
-	public String getTitle() {
-		return title;
-	}
+  public String getTitle() {
+    return title;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public String getMessage() {
-		return message;
-	}
+  public String getMessage() {
+    return message;
+  }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
-	public String getPlace() {
-		return place;
-	}
+  public String getRegion() {
+    return region;
+  }
 
-	public void setPlace(String place) {
-		this.place = place;
-	}
+  public void setRegion(String region) {
+    this.region = region;
+  }
 
-	public String getTime() {
-		return time;
-	}
+  public String getPlace() {
+    return place;
+  }
 
-	public void setTime(String time) {
-		this.time = time;
-	}
+  public void setPlace(String place) {
+    this.place = place;
+  }
 
-	public Geometry getPoint() {
-		return point;
-	}
+  public String getTime() {
+    return time;
+  }
 
-	public void setPoint(Geometry point) {
-		this.point = point;
-	}
+  public void setTime(String time) {
+    this.time = time;
+  }
 
-	public Geometry getGeometry() {
-		return point;
-	}
+  public Geometry getPoint() {
+    return point;
+  }
 
-	public void setGeometry(Geometry point) {
-		this.point = point;
-	}
+  public void setPoint(Geometry point) {
+    this.point = point;
+  }
+
+  public Geometry getGeometry() {
+    return point;
+  }
+
+  public void setGeometry(Geometry point) {
+    this.point = point;
+  }
 
 }

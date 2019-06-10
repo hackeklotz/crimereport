@@ -17,6 +17,22 @@
                 "--remote-debugging-port=9222",
                 "--disable-background-networking"
             ]
-        }
+        },
+        {
+            "name": "Debug CRA Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
+            "args": [
+              "test",
+              "--runInBand",
+              "--no-cache",
+              "--watchAll=false"
+            ],
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+          }
     ]
 }

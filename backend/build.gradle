@@ -25,7 +25,15 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-core:2.11.2'
     
     compile 'io.springfox:springfox-swagger2:2.9.2'
-    compile 'io.springfox:springfox-swagger-ui:2.9.2'    
+    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
+    testImplementation  'org.assertj:assertj-core:3.12.2'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 bootJar {

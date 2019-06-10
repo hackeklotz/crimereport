@@ -1,4 +1,6 @@
-/.gradle
+.gradle
 .settings 
 .project
+.idea
+*.iml
 /crimes*.sq3
