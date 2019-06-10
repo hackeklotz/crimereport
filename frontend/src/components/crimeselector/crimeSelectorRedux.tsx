@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { ICrime, IStoreState } from 'components/types';
 
 // actions
-export enum ActionTypes {
+enum ActionTypes {
     NEXT_REPORT = 'NEXT_REPORT',
     PREVIOUS_REPORT = 'PREVIOUS_REPORT',
     REQUEST_REPORT = 'REQUEST_REPORT',
@@ -12,7 +12,7 @@ export enum ActionTypes {
 }
 
 // action creators
-export interface ISwitchReport {
+interface ISwitchReport {
     type: string;
 }
 
@@ -52,26 +52,26 @@ export function lastReport() {
     };
 }
 
-export interface IFetchReport {
+interface IFetchReport {
     type: string,
     reportId: number
 }
 
-export function requestReport(currentReportId: number): IFetchReport {
+function requestReport(currentReportId: number): IFetchReport {
     return {
         reportId: currentReportId,
         type: ActionTypes.REQUEST_REPORT,
     }
 }
 
-export interface IReceiveReport {
+interface IReceiveReport {
     type: ActionTypes.RECEIVE_REPORT,
     reportId: number,
     posts: ICrime[],
     receivedAt: number
 }
 
-export function receiveReport(currentReportId: number, report: ICrime[]): IReceiveReport {
+function receiveReport(currentReportId: number, report: ICrime[]): IReceiveReport {
     return {
         posts: report,
         receivedAt: Date.now(),
@@ -80,7 +80,7 @@ export function receiveReport(currentReportId: number, report: ICrime[]): IRecei
     }
 }
 
-export function fetchReport(reportId: number): any {
+function fetchReport(reportId: number): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestReport(reportId))
 
@@ -93,23 +93,23 @@ export function fetchReport(reportId: number): any {
     }
 }
 
-export interface IFetchReports {
+interface IFetchReports {
     type: string
 }
 
-export function requestAllReportIds(): IFetchReports {
+function requestAllReportIds(): IFetchReports {
     return {
         type: ActionTypes.REQUEST_ALL_REPORT_IDS,
     }
 }
 
-export interface IReceiveReportIds {
+interface IReceiveReportIds {
     type: ActionTypes.RECEIVE_ALL_REPORT_IDS,
     allReportIds: number[],
     receivedAt: number
 }
 
-export function receiveAllReportIds(reports: number[]): IReceiveReportIds {
+function receiveAllReportIds(reports: number[]): IReceiveReportIds {
     return {
         allReportIds: reports,
         receivedAt: Date.now(),
@@ -118,7 +118,7 @@ export function receiveAllReportIds(reports: number[]): IReceiveReportIds {
 }
 
 
-export function fetchAllReportIds(): any {
+function fetchAllReportIds(): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestAllReportIds())
 
@@ -134,7 +134,7 @@ export function fetchAllReportIds(): any {
 type Action = IReceiveReport | IReceiveReportIds
 
 // reducers
-export function selectReport(state: any, action: Action): IStoreState {
+function selectReport(state: any, action: Action): IStoreState {
     switch (action.type) {
         case ActionTypes.RECEIVE_REPORT:
             {
