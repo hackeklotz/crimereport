@@ -84,7 +84,7 @@ function fetchReport(reportId: number): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestReport(reportId))
 
-        return fetch(`/api/reports/${reportId}`)
+        return fetch(`/api/reports/${reportId}?region=Landeshauptstadt Dresden`)
             .then(
                 response => response.json(),
                 error => console.log('An error occurred.', error)
