@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeSet;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,16 +51,18 @@ public class Database {
         }
     }
 
-    public List<Crime> getReport(String id, String region) {
+    public List<Crime> getReport(String id, Optional<String> region) {
         LOGGER.info("Retrieve report with ID " + id);
         try (Connection conn = DriverManager.getConnection(url)) {
+            Condition condition = DSL.condition(String.format("reportId = \"%s\"", id));
+            condition = buildCondition(condition, region);
+
             DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
-            SelectConditionStep<Record> query = create.select().from("crime")
-                    .where(String.format("reportId = \"%s\"", id));
-            if (region != null) {
-                query = query.and(String.format("region = \"%s\"", region));
-            }
-            Result<Record> result = query.fetch();
+            Result<Record> result = create
+                    .select()
+                    .from("crime")
+                    .where(condition)
+                    .fetch();
 
             List<Crime> crimes = new ArrayList<>();
             for (Record record : result) {
@@ -87,11 +90,18 @@ public class Database {
         return crimeBuilder.build();
     }
 
-    public TreeSet<String> getAllReportIds() {
+    public TreeSet<String> getAllReportIds(Optional<String> region) {
         LOGGER.info("Retrieve all report IDs");
         try (Connection conn = DriverManager.getConnection(url)) {
+            Condition condition = DSL.trueCondition();
+            condition = buildCondition(condition, region);
+
             DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
-            Result<Record> result = create.select().from("crime").fetch();
+            Result<Record> result = create
+                    .select()
+                    .from("crime")
+                    .where(condition)
+                    .fetch();
 
             TreeSet<String> reportIds = new TreeSet<>();
             for (Record record : result) {
@@ -102,5 +112,12 @@ public class Database {
             LOGGER.error("Couldn't retrieve crimes", e);
             return new TreeSet<>();
         }
+    }
+
+    private Condition buildCondition(Condition condition, Optional<String> region) {
+        if (region.isPresent()) {
+            condition = condition.and(String.format("region = \"%s\"", region.get()));
+        }
+        return condition;
     }
 }

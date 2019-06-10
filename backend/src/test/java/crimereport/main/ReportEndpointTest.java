@@ -13,13 +13,31 @@ class ReportEndpointTest {
     void getAllReportIds() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
-        List<String> allReportIds = reportEndpoint.getAllReportIds();
+        List<String> allReportIds = reportEndpoint.getAllReportIds(null);
 
         assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_456", "MI_2019_789");
     }
 
     @Test
-    void getReport() {
+    void getAllReportIds_FilterRegion_Match() {
+        ReportEndpoint reportEndpoint = createReportEndpoint();
+
+        List<String> allReportIds = reportEndpoint.getAllReportIds("Landeshauptstadt Dresden");
+
+        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_456", "MI_2019_789");
+    }
+
+    @Test
+    void getAllReportIds_FilterRegion_NoMatch() {
+        ReportEndpoint reportEndpoint = createReportEndpoint();
+
+        List<String> allReportIds = reportEndpoint.getAllReportIds("Dräsd´n");
+
+        assertThat(allReportIds).isEmpty();
+    }
+
+    @Test
+    void getReport_Title() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
         List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", null);

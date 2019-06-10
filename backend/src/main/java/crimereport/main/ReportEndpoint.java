@@ -2,6 +2,7 @@ package crimereport.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +18,25 @@ import crimereport.database.Database;
 @RequestMapping("/api/reports")
 public class ReportEndpoint {
 
-  private Database database;
+    private Database database;
 
-  @Autowired
-  public ReportEndpoint(DatabaseProperties databaseProperties) {
-    String url = databaseProperties.getUrl();
-    this.database = new Database(url);
-  }
+    @Autowired
+    public ReportEndpoint(DatabaseProperties databaseProperties) {
+        String url = databaseProperties.getUrl();
+        this.database = new Database(url);
+    }
 
-  @RequestMapping(path = "/", method = RequestMethod.GET)
-  public List<String> getAllReportIds() {
-    TreeSet<String> reportIds = database.getAllReportIds();
-    return new ArrayList<>(reportIds);
-  }
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public List<String> getAllReportIds(
+            @RequestParam(value = "region", required = false) String region) {
+        TreeSet<String> reportIds = database.getAllReportIds(Optional.ofNullable(region));
+        return new ArrayList<>(reportIds);
+    }
 
-  @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-  public List<Crime> getReport(@PathVariable String id,
-      @RequestParam(value = "region", required = false) String region) {
-    return database.getReport(id, region);
-  }
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public List<Crime> getReport(@PathVariable String id,
+                                 @RequestParam(value = "region", required = false) String region) {
+        return database.getReport(id, Optional.ofNullable(region));
+    }
 
 }
