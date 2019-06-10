@@ -1,6 +1,8 @@
 import { Dispatch } from 'redux';
 import { ICrime, IStoreState } from 'components/types';
 
+const region = 'Landeshauptstadt Dresden'
+
 // actions
 enum ActionTypes {
     NEXT_REPORT = 'NEXT_REPORT',
@@ -84,7 +86,7 @@ function fetchReport(reportId: number): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestReport(reportId))
 
-        return fetch(`/api/reports/${reportId}?region=Landeshauptstadt Dresden`)
+        return fetch(`/api/reports/${reportId}?region=` + region)
             .then(
                 response => response.json(),
                 error => console.log('An error occurred.', error)
@@ -122,7 +124,7 @@ function fetchAllReportIds(): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestAllReportIds())
 
-        return fetch(`/api/reports/`)
+        return fetch(`/api/reports/?region=` + region)
             .then(
                 response => response.json(),
                 error => console.log('An error occurred.', error)
