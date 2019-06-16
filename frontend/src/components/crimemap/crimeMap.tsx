@@ -1,23 +1,39 @@
-import * as React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import { connect } from 'react-redux';
+import { highlightCrime } from 'components/crimeselector/crimeSelectorRedux';
 import { ICrime, IStoreState } from 'components/types';
+import { LayerEvent } from 'leaflet';
+import * as React from 'react';
+import { CircleMarker, Map, Popup, TileLayer } from 'react-leaflet';
+import { connect } from 'react-redux';
 
 export interface IProps {
     crimes: ICrime[];
+
+    highlightCrime: (crimeId: number, highlight: boolean) => void;
 }
 
-export function CrimeMap({ crimes }: IProps) {
+export function CrimeMap({ crimes, highlightCrime }: IProps) {
     const position: [number, number] = [51.049259, 13.73836]
-    
+
     const crimeList = crimes
         .filter((crime) =>
             crime.coordinate != null
         )
         .map((crime) =>
-            <Marker position={crime.coordinate} key={crime.id}>
+            <CircleMarker
+                center={crime.coordinate}
+                radius={15}
+                color={crime.highlight ? 'red' : 'blue'}
+                key={crime.id}
+                onMouseOver={(e: LayerEvent) => {
+                    e.target.openPopup();
+                    highlightCrime(crime.id, true)
+                }}
+                onMouseOut={(e: LayerEvent) => {
+                    e.target.closePopup();
+                    highlightCrime(crime.id, false)
+                }}>
                 <Popup>{crime.title}</Popup>
-            </Marker>
+            </CircleMarker>
         )
 
     return (
@@ -38,5 +54,10 @@ function mapStateToProps({ crimes }: IStoreState) {
         crimes,
     }
 }
+function mapDispatchToProps(dispatch: any, ) {
+    return {
+        highlightCrime: (crimeId: number, highlight: boolean) => dispatch(highlightCrime(crimeId, highlight)),
+    }
+}
 
-export default connect(mapStateToProps, null)(CrimeMap);
+export default connect(mapStateToProps, mapDispatchToProps)(CrimeMap);
