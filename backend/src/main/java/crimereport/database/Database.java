@@ -77,10 +77,11 @@ public class Database {
     }
 
     private Crime buildCrime(Record record) {
+        int id = (int) record.get("id");
         String title = (String) record.get("title");
         String message = (String) record.get("message");
 
-        CrimeBuilder crimeBuilder = new CrimeBuilder(title, message);
+        CrimeBuilder crimeBuilder = new CrimeBuilder(id, title, message);
 
         Object longitude = record.get("longitude");
         Object latitude = record.get("latitude");

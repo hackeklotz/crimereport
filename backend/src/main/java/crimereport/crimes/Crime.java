@@ -2,12 +2,21 @@ package crimereport.crimes;
 
 public class Crime {
 
+  private int id;
   private String title;
   private String message;
   private String region;
   private String place;
   private String time;
   private Geometry point;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 
   public String getTitle() {
     return title;

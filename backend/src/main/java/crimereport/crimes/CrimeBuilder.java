@@ -2,13 +2,15 @@ package crimereport.crimes;
 
 public class CrimeBuilder {
 
-	public final String title;
-	public final String message;
+	private final int id;
+	private final String title;
+	private final String message;
 
-	public Double latitude;
-	public Double longitude;
+	private Double latitude;
+	private Double longitude;
 
-	public CrimeBuilder(String title, String message) {
+	public CrimeBuilder(int id, String title, String message) {
+		this.id = id;
 		this.title = title;
 		this.message = message;
 	}
@@ -22,6 +24,7 @@ public class CrimeBuilder {
 	public Crime build() {
 		Crime crime = new Crime();
 
+		crime.setId(id);
 		crime.setTitle(title);
 		crime.setMessage(message);
 
