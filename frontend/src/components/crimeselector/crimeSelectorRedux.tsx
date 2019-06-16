@@ -10,7 +10,9 @@ enum ActionTypes {
     REQUEST_REPORT = 'REQUEST_REPORT',
     RECEIVE_REPORT = 'RECEIVE_REPORT',
     REQUEST_ALL_REPORT_IDS = 'REQUEST_ALL_REPORT_IDS',
-    RECEIVE_ALL_REPORT_IDS = 'RECEIVE_ALL_REPORT_IDS'
+    RECEIVE_ALL_REPORT_IDS = 'RECEIVE_ALL_REPORT_IDS',
+
+    HIGHLIGHT_CRIME = 'HIGHLIGHT_CRIME'
 }
 
 // action creators
@@ -133,7 +135,22 @@ function fetchAllReportIds(): any {
     }
 }
 
-type Action = IReceiveReport | IReceiveReportIds
+
+interface IHighlightCrime {
+    type: ActionTypes.HIGHLIGHT_CRIME,
+    crimeId: number,
+    highlight: boolean,
+}
+
+export function highlightCrime(crimeId: number, highlight: boolean): IHighlightCrime {
+    return {
+        crimeId: crimeId,
+        highlight: highlight,
+        type: ActionTypes.HIGHLIGHT_CRIME,
+    }
+}
+
+type Action = IReceiveReport | IReceiveReportIds | IHighlightCrime
 
 // reducers
 function selectReport(state: any, action: Action): IStoreState {
@@ -150,11 +167,12 @@ function selectReport(state: any, action: Action): IStoreState {
 
                     const newCrime = {
                         coordinate,
-                        id: 1,
+                        id: crime.id,
                         message: crime.message,
                         place: crime.place,
                         time: crime.time,
                         title: crime.title,
+                        highlight: false,
                     }
                     newCrimes.push(newCrime)
                 })
@@ -164,6 +182,15 @@ function selectReport(state: any, action: Action): IStoreState {
         case ActionTypes.RECEIVE_ALL_REPORT_IDS:
             {
                 return { ...state, allReportIds: action.allReportIds };
+            }
+        case ActionTypes.HIGHLIGHT_CRIME:
+            {
+                return {
+                    ...state,
+                    crimes: state.crimes.map((crime: ICrime) => crime.id === action.crimeId ?
+                        { ...crime, highlight: action.highlight } : crime
+                    )
+                }
             }
         default:
             return state;

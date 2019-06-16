@@ -18,3 +18,8 @@
   margin-top: 0px;
   margin-bottom: 5px;  
 }
+
+.crime-viewer-list .crime-viewer-list-hover {
+  border-color: #34419c;
+  background-color: whitesmoke;
+}

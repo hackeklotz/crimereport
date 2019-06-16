@@ -37,14 +37,24 @@ class ReportEndpointTest {
     }
 
     @Test
+    void getReport_Id() {
+        ReportEndpoint reportEndpoint = createReportEndpoint();
+
+        List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", null);
+
+        assertThat(crimes).hasSize(2);
+        assertThat(crimes.get(0).getId()).isEqualTo(0);
+        assertThat(crimes.get(1).getId()).isEqualTo(1);
+    }
+
+    @Test
     void getReport_Title() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
         List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", null);
 
-        assertThat(crimes).hasSize(1);
-        Crime crime = crimes.get(0);
-        assertThat(crime.getTitle()).isEqualTo("Katze weg");
+        assertThat(crimes).hasSize(2);
+        assertThat(crimes.get(0).getTitle()).isEqualTo("Katze weg");
     }
 
     @Test
@@ -53,7 +63,7 @@ class ReportEndpointTest {
 
         List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", "Landeshauptstadt Dresden");
 
-        assertThat(crimes).hasSize(1);
+        assertThat(crimes).hasSize(2);
     }
 
     @Test

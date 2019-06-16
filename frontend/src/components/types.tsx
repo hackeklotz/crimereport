@@ -12,4 +12,5 @@ export interface ICrime {
     title: string;
     message: string;
     coordinate: [number, number];
+    highlight: boolean;
 }
