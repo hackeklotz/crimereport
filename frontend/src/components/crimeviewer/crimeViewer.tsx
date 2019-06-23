@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ICrime, IStoreState } from 'components/types';
-import { highlightCrime } from 'components/crimeselector/crimeSelectorRedux';
+import { highlightCrime } from 'components/crimeviewer/crimeViewerRedux';
 import './crimeViewer.css';
 
 export interface IProps {

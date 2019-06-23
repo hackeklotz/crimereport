@@ -11,15 +11,9 @@ enum ActionTypes {
     RECEIVE_REPORT = 'RECEIVE_REPORT',
     REQUEST_ALL_REPORT_IDS = 'REQUEST_ALL_REPORT_IDS',
     RECEIVE_ALL_REPORT_IDS = 'RECEIVE_ALL_REPORT_IDS',
-
-    HIGHLIGHT_CRIME = 'HIGHLIGHT_CRIME'
 }
 
 // action creators
-interface ISwitchReport {
-    type: string;
-}
-
 export function nextReport() {
     return (dispatch: Dispatch<any>, getState: () => IStoreState) => {
         return dispatch(fetchAllReportIds()).then(() => {
@@ -110,7 +104,7 @@ function requestAllReportIds(): IFetchReports {
 interface IReceiveReportIds {
     type: ActionTypes.RECEIVE_ALL_REPORT_IDS,
     allReportIds: number[],
-    receivedAt: number
+    receivedAt: number    
 }
 
 function receiveAllReportIds(reports: number[]): IReceiveReportIds {
@@ -135,25 +129,10 @@ function fetchAllReportIds(): any {
     }
 }
 
-
-interface IHighlightCrime {
-    type: ActionTypes.HIGHLIGHT_CRIME,
-    crimeId: number,
-    highlight: boolean,
-}
-
-export function highlightCrime(crimeId: number, highlight: boolean): IHighlightCrime {
-    return {
-        crimeId: crimeId,
-        highlight: highlight,
-        type: ActionTypes.HIGHLIGHT_CRIME,
-    }
-}
-
-type Action = IReceiveReport | IReceiveReportIds | IHighlightCrime
+type Action = IReceiveReport | IReceiveReportIds
 
 // reducers
-function selectReport(state: any, action: Action): IStoreState {
+function selectReport(state: IStoreState, action: Action): IStoreState {
     switch (action.type) {
         case ActionTypes.RECEIVE_REPORT:
             {
@@ -182,16 +161,7 @@ function selectReport(state: any, action: Action): IStoreState {
         case ActionTypes.RECEIVE_ALL_REPORT_IDS:
             {
                 return { ...state, allReportIds: action.allReportIds };
-            }
-        case ActionTypes.HIGHLIGHT_CRIME:
-            {
-                return {
-                    ...state,
-                    crimes: state.crimes.map((crime: ICrime) => crime.id === action.crimeId ?
-                        { ...crime, highlight: action.highlight } : crime
-                    )
-                }
-            }
+            }        
         default:
             return state;
     }
