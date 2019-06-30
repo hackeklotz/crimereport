@@ -8,6 +8,7 @@ lxml = "*"
 geopy = "*"
 requests = "*"
 scrapy = "*"
+GDAL = "==2.4.0"
 
 [dev-packages]
 pytest = "*"
