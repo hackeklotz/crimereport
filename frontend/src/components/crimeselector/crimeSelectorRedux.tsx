@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { ICrime, IStoreState } from 'components/types';
+import { ICrime, IStoreState, IReport } from 'components/types';
 
 const region = 'Landeshauptstadt Dresden'
 
@@ -18,7 +18,7 @@ export function nextReport() {
     return (dispatch: Dispatch<any>, getState: () => IStoreState) => {
         return dispatch(fetchAllReportIds()).then(() => {
             const reportIds = getState().allReportIds
-            const currentReportId = getState().reportId
+            const currentReportId = getState().currentReport.id
             let index = reportIds.indexOf(currentReportId) + 1
             index = Math.min(reportIds.length - 1, index)
             const nextReportId = reportIds[index]
@@ -31,7 +31,7 @@ export function previousReport() {
     return (dispatch: Dispatch<any>, getState: () => IStoreState) => {
         return dispatch(fetchAllReportIds()).then(() => {
             const reportIds = getState().allReportIds
-            const currentReportId = getState().reportId
+            const currentReportId = getState().currentReport.id
             let index = reportIds.indexOf(currentReportId) - 1
             index = Math.max(0, index)
             const nextReportId = reportIds[index]
@@ -52,10 +52,10 @@ export function lastReport() {
 
 interface IFetchReport {
     type: string,
-    reportId: number
+    reportId: string
 }
 
-function requestReport(currentReportId: number): IFetchReport {
+function requestReport(currentReportId: string): IFetchReport {
     return {
         reportId: currentReportId,
         type: ActionTypes.REQUEST_REPORT,
@@ -64,12 +64,12 @@ function requestReport(currentReportId: number): IFetchReport {
 
 interface IReceiveReport {
     type: ActionTypes.RECEIVE_REPORT,
-    reportId: number,
-    posts: ICrime[],
+    reportId: string,
+    posts: IReport,
     receivedAt: number
 }
 
-function receiveReport(currentReportId: number, report: ICrime[]): IReceiveReport {
+function receiveReport(currentReportId: string, report: IReport): IReceiveReport {
     return {
         posts: report,
         receivedAt: Date.now(),
@@ -78,7 +78,7 @@ function receiveReport(currentReportId: number, report: ICrime[]): IReceiveRepor
     }
 }
 
-function fetchReport(reportId: number): any {
+function fetchReport(reportId: string): any {
     return (dispatch: Dispatch<any>) => {
         dispatch(requestReport(reportId))
 
@@ -103,11 +103,11 @@ function requestAllReportIds(): IFetchReports {
 
 interface IReceiveReportIds {
     type: ActionTypes.RECEIVE_ALL_REPORT_IDS,
-    allReportIds: number[],
-    receivedAt: number    
+    allReportIds: string[],
+    receivedAt: number
 }
 
-function receiveAllReportIds(reports: number[]): IReceiveReportIds {
+function receiveAllReportIds(reports: string[]): IReceiveReportIds {
     return {
         allReportIds: reports,
         receivedAt: Date.now(),
@@ -137,7 +137,7 @@ function selectReport(state: IStoreState, action: Action): IStoreState {
         case ActionTypes.RECEIVE_REPORT:
             {
                 const newCrimes: ICrime[] = []
-                action.posts.forEach((crime: any) => {
+                action.posts.crimes.forEach((crime: any) => {
 
                     let coordinate;
                     if (crime.point != null) {
@@ -155,13 +155,19 @@ function selectReport(state: IStoreState, action: Action): IStoreState {
                     }
                     newCrimes.push(newCrime)
                 })
+                const report: IReport = {
+                    id: action.posts.id,
+                    year: action.posts.year,
+                    number: action.posts.number,
+                    crimes: newCrimes
+                }
 
-                return { ...state, crimes: newCrimes, reportId: action.reportId };
+                return { ...state, currentReport: report};
             }
         case ActionTypes.RECEIVE_ALL_REPORT_IDS:
             {
                 return { ...state, allReportIds: action.allReportIds };
-            }        
+            }
         default:
             return state;
     }

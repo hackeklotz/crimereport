@@ -3,7 +3,7 @@ import CrimeSelector from 'components/crimeselector/crimeSelector';
 import selectorReducer from 'components/crimeselector/crimeSelectorRedux';
 import CrimeViewer from 'components/crimeviewer/crimeViewer';
 import viewerReducer from 'components/crimeviewer/crimeViewerRedux';
-import { IStoreState } from 'components/types';
+import { IStoreState, IReport } from 'components/types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -16,9 +16,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const preloadedStore: IStoreState= {
   allReportIds: [],
-  crimes: [],  
-  day: '',
-  reportId: -1  
+  currentReport: {id: "", year:-1, number:-1, crimes:[]}
 }
 
 const rootReducer = reduceReducers(selectorReducer as any, viewerReducer as any)

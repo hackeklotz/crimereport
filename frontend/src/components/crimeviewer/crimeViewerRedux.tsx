@@ -22,14 +22,16 @@ export function highlightCrime(crimeId: number, highlight: boolean): IHighlightC
 
 // reducers
 function highlightReport(state: IStoreState, action: IHighlightCrime): IStoreState {
-    switch (action.type) {        
+    switch (action.type) {
         case ActionTypes.HIGHLIGHT_CRIME:
             {
                 return {
                     ...state,
-                    crimes: state.crimes.map((crime: ICrime) => crime.id === action.crimeId ?
-                        { ...crime, highlight: action.highlight } : crime
-                    )
+                    currentReport: {
+                        ...state.currentReport,
+                        crimes: state.currentReport.crimes.map((crime: ICrime) => crime.id === action.crimeId ?
+                            { ...crime, highlight: action.highlight } : crime)
+                    }
                 }
             }
         default:

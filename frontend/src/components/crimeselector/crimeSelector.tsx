@@ -6,7 +6,7 @@ import { lastReport, nextReport, previousReport } from './crimeSelectorRedux';
 import { useEffect } from 'react';
 
 interface IProps {
-  reportId: number;
+  reportId: string;
   onInit: () => void;
   onNext: () => void;
   onPrevious: () => void;
@@ -27,10 +27,9 @@ function CrimeSelector({ reportId, onInit, onNext, onPrevious }: IProps) {
 
 
 // container
-function mapStateToProps({ reportId }: IStoreState) {
-  return {
-    reportId,
-  }
+function mapStateToProps(state: IStoreState) {
+  const { currentReport } = state
+  return { reportId: currentReport.id }
 }
 
 function mapDispatchToProps(dispatch: any, ) {
