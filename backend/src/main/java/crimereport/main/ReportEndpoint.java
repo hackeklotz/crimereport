@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TreeSet;
 
+import crimereport.crimes.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,8 @@ public class ReportEndpoint {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public List<Crime> getReport(@PathVariable String id,
-                                 @RequestParam(value = "region", required = false) String region) {
+    public Report getReport(@PathVariable String id,
+                            @RequestParam(value = "region", required = false) String region) {
         return database.getReport(id, Optional.ofNullable(region));
     }
 
