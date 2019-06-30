@@ -37,7 +37,7 @@ export function CrimeMap({ crimes, highlightCrime }: IProps) {
         )
 
     return (
-        <Map center={position} zoom={13} className='crime-map'>
+        <Map center={position} zoom={12} className='crime-map'>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
