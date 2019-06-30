@@ -6,20 +6,21 @@ import { lastReport, nextReport, previousReport } from './crimeSelectorRedux';
 import { useEffect } from 'react';
 
 interface IProps {
-  reportId: string;
+  number: number;
+  year: number;
   onInit: () => void;
   onNext: () => void;
   onPrevious: () => void;
 }
 
 
-function CrimeSelector({ reportId, onInit, onNext, onPrevious }: IProps) {
+function CrimeSelector({ number, year, onInit, onNext, onPrevious }: IProps) {
   useEffect(() => { onInit(); }, [onInit])
 
   return (
     <div className='crime-selector'>
       <button onClick={onPrevious} className="crime-selector-button left" />
-      {reportId}
+      {number}/{year}
       <button onClick={onNext} className="crime-selector-button right" />
     </div>
   );
@@ -29,7 +30,10 @@ function CrimeSelector({ reportId, onInit, onNext, onPrevious }: IProps) {
 // container
 function mapStateToProps(state: IStoreState) {
   const { currentReport } = state
-  return { reportId: currentReport.id }
+  return {
+    number: currentReport.number,
+    year: currentReport.year
+  }
 }
 
 function mapDispatchToProps(dispatch: any, ) {
