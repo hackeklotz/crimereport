@@ -1,4 +1,4 @@
-import { highlightCrime } from 'components/crimeselector/crimeSelectorRedux';
+import { highlightCrime } from 'components/crimeviewer/crimeViewerRedux';
 import { ICrime, IStoreState } from 'components/types';
 import { LayerEvent } from 'leaflet';
 import * as React from 'react';
