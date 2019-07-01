@@ -40,6 +40,6 @@ bootJar {
 	from('../frontend/build') {
 		into 'BOOT-INF/classes/static'
 	}
-    baseName = '$rootProject.name'
+    archiveBaseName = "$rootProject.name"
 }
 bootJar.dependsOn(':frontend:assemble')
