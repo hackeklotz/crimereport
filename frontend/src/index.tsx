@@ -3,7 +3,7 @@ import CrimeSelector from 'components/crimeselector/crimeSelector';
 import selectorReducer from 'components/crimeselector/crimeSelectorRedux';
 import CrimeViewer from 'components/crimeviewer/crimeViewer';
 import viewerReducer from 'components/crimeviewer/crimeViewerRedux';
-import { IStoreState, IReport } from 'components/types';
+import { IStoreState } from 'components/types';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
