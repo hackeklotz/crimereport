@@ -3,6 +3,7 @@ package crimereport.main;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import crimereport.crimes.Crime;
+import crimereport.crimes.Report;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,7 +16,7 @@ class ReportEndpointTest {
 
         List<String> allReportIds = reportEndpoint.getAllReportIds(null);
 
-        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_456", "MI_2019_789");
+        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_789", "MI_2019_456");
     }
 
     @Test
@@ -24,7 +25,7 @@ class ReportEndpointTest {
 
         List<String> allReportIds = reportEndpoint.getAllReportIds("Landeshauptstadt Dresden");
 
-        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_456", "MI_2019_789");
+        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_789", "MI_2019_456");
     }
 
     @Test
@@ -40,7 +41,35 @@ class ReportEndpointTest {
     void getReport_Id() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
-        List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", null);
+        Report report = reportEndpoint.getReport("MI_2019_123", null);
+
+        assertThat(report.getId()).isEqualTo("MI_2019_123");
+    }
+
+    @Test
+    void getReport_Year() {
+        ReportEndpoint reportEndpoint = createReportEndpoint();
+
+        Report report = reportEndpoint.getReport("MI_2019_123", null);
+
+        assertThat(report.getYear()).isEqualTo(2019);
+    }
+
+    @Test
+    void getReport_Number() {
+        ReportEndpoint reportEndpoint = createReportEndpoint();
+
+        Report report = reportEndpoint.getReport("MI_2019_123", null);
+
+        assertThat(report.getNumber()).isEqualTo(666);
+    }
+
+    @Test
+    void getReport_CrimeId() {
+        ReportEndpoint reportEndpoint = createReportEndpoint();
+
+        Report report = reportEndpoint.getReport("MI_2019_123", null);
+        List<Crime> crimes = report.getCrimes();
 
         assertThat(crimes).hasSize(2);
         assertThat(crimes.get(0).getId()).isEqualTo(0);
@@ -48,10 +77,12 @@ class ReportEndpointTest {
     }
 
     @Test
-    void getReport_Title() {
+    void getReport_CrimeTitle() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
-        List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", null);
+        Report report = reportEndpoint.getReport("MI_2019_123", null);
+        List<Crime> crimes = report.getCrimes();
+
 
         assertThat(crimes).hasSize(2);
         assertThat(crimes.get(0).getTitle()).isEqualTo("Katze weg");
@@ -61,7 +92,8 @@ class ReportEndpointTest {
     void getReport_FilterRegion_Match() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
-        List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", "Landeshauptstadt Dresden");
+        Report report = reportEndpoint.getReport("MI_2019_123", "Landeshauptstadt Dresden");
+        List<Crime> crimes = report.getCrimes();
 
         assertThat(crimes).hasSize(2);
     }
@@ -70,7 +102,8 @@ class ReportEndpointTest {
     void getReport_FilterRegion_NoMatch() {
         ReportEndpoint reportEndpoint = createReportEndpoint();
 
-        List<Crime> crimes = reportEndpoint.getReport("MI_2019_123", "Dräsd´n");
+        Report report = reportEndpoint.getReport("MI_2019_123", "Dräsd´n");
+        List<Crime> crimes = report.getCrimes();
 
         assertThat(crimes).isEmpty();
     }

@@ -16,9 +16,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const preloadedStore: IStoreState= {
   allReportIds: [],
-  crimes: [],  
-  day: '',
-  reportId: -1  
+  currentReport: {id: "", year:-1, number:-1, crimes:[]}
 }
 
 const rootReducer = reduceReducers(selectorReducer as any, viewerReducer as any)

@@ -1,7 +1,12 @@
 export interface IStoreState {
-    allReportIds: number[];
-    day: string;
-    reportId: number;
+    allReportIds: string[];
+    currentReport: IReport;
+}
+
+export interface IReport {
+    id: string;
+    year: number;
+    number: number;
     crimes: ICrime[];
 }
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TreeSet;
 
+import crimereport.crimes.Report;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jooq.*;
@@ -16,6 +17,8 @@ import org.jooq.impl.DSL;
 import crimereport.crimes.Crime;
 import crimereport.crimes.CrimeBuilder;
 import crimereport.main.CrimeEndpoint;
+
+import static org.jooq.impl.DSL.field;
 
 public class Database {
 
@@ -51,29 +54,54 @@ public class Database {
         }
     }
 
-    public List<Crime> getReport(String id, Optional<String> region) {
+    public Report getReport(String id, Optional<String> region) {
         LOGGER.info("Retrieve report with ID " + id);
+        Report report = new Report();
+        report.setId(id);
         try (Connection conn = DriverManager.getConnection(url)) {
-            Condition condition = DSL.condition(String.format("reportId = \"%s\"", id));
-            condition = buildCondition(condition, region);
-
-            DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
-            Result<Record> result = create
-                    .select()
-                    .from("crime")
-                    .where(condition)
-                    .fetch();
-
-            List<Crime> crimes = new ArrayList<>();
-            for (Record record : result) {
-                Crime crime = buildCrime(record);
-                crimes.add(crime);
-            }
-            return crimes;
+            addReportInfos(report, conn);
+            List<Crime> crimes = getCrimes(id, region, conn);
+            report.setCrimes(crimes);
         } catch (SQLException e) {
             LOGGER.error("Couldn't retrieve crimes", e);
-            return new ArrayList<>();
         }
+        return report;
+    }
+
+    private void addReportInfos(Report report, Connection conn) {
+        Condition condition = DSL.condition(String.format("id = \"%s\"", report.getId()));
+
+        DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
+        Record record = create
+                .select()
+                .from("report")
+                .where(condition)
+                .fetchOne();
+
+        int year = (int) record.get("year");
+        int number = (int) record.get("number");
+
+        report.setYear(year);
+        report.setNumber(number);
+    }
+
+    private List<Crime> getCrimes(String id, Optional<String> region, Connection conn) {
+        Condition condition = DSL.condition(String.format("reportId = \"%s\"", id));
+        condition = buildCondition(condition, region);
+
+        DSLContext create = DSL.using(conn, SQLDialect.SQLITE);
+        Result<Record> result = create
+                .select()
+                .from("crime")
+                .where(condition)
+                .fetch();
+
+        List<Crime> crimes = new ArrayList<>();
+        for (Record record : result) {
+            Crime crime = buildCrime(record);
+            crimes.add(crime);
+        }
+        return crimes;
     }
 
     private Crime buildCrime(Record record) {
@@ -91,7 +119,7 @@ public class Database {
         return crimeBuilder.build();
     }
 
-    public TreeSet<String> getAllReportIds(Optional<String> region) {
+    public List<String> getAllReportIds(Optional<String> region) {
         LOGGER.info("Retrieve all report IDs");
         try (Connection conn = DriverManager.getConnection(url)) {
             Condition condition = DSL.trueCondition();
@@ -101,17 +129,21 @@ public class Database {
             Result<Record> result = create
                     .select()
                     .from("crime")
+                    .join("report")
+                    .on(field("crime.reportId").eq(field("report.Id")))
                     .where(condition)
+                    .groupBy(field("crime.reportId"))
+                    .orderBy(field("year"), field("number"))
                     .fetch();
 
-            TreeSet<String> reportIds = new TreeSet<>();
+            List<String> reportIds = new ArrayList<>();
             for (Record record : result) {
                 reportIds.add(record.get("reportId", String.class));
             }
             return reportIds;
         } catch (SQLException e) {
             LOGGER.error("Couldn't retrieve crimes", e);
-            return new TreeSet<>();
+            return new ArrayList<>();
         }
     }
 

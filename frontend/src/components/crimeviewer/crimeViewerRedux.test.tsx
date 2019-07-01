@@ -2,17 +2,41 @@ import viewerReducer, { highlightCrime } from 'components/crimeviewer/crimeViewe
 import expect from 'expect';
 import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { IStoreState, IReport } from 'components/types';
 
-function createInitialStore() {
-    const initialState = {
+
+function createFakeStore(firstHighlight: boolean, secondHighlight: boolean): IStoreState {
+    const report: IReport = {
+        id: "",
+        year: -1,
+        number: -1,
         crimes: [{
             id: 1,
-            highlight: false
+            title: "",
+            time: "",
+            place: "",
+            message: "",
+            coordinate: [-1,-1],
+            highlight: firstHighlight
         }, {
             id: 2,
-            highlight: true
+            title: "",
+            time: "",
+            place: "",
+            message: "",
+            coordinate: [-1,-1],
+            highlight: secondHighlight
         }]
     }
+    return {
+        allReportIds: [],
+        currentReport: report        
+    }    
+}
+
+function createInitialStore() {
+    const initialState = createFakeStore(false, true)
+
     return createStore(
         viewerReducer as any,
         initialState,
@@ -27,17 +51,7 @@ describe('highlightCrime', () => {
 
         store.dispatch(highlightCrime(1, true))
 
-        expect(store.getState()).toEqual(
-            {
-                crimes: [{
-                    id: 1,
-                    highlight: true
-                }, {
-                    id: 2,
-                    highlight: true
-                }]
-            }
-        )
+        expect(store.getState()).toEqual(createFakeStore(true, true))
     })
 
     it('highlight set to false', () => {
@@ -45,17 +59,7 @@ describe('highlightCrime', () => {
 
         store.dispatch(highlightCrime(2, false))
 
-        expect(store.getState()).toEqual(
-            {
-                crimes: [{
-                    id: 1,
-                    highlight: false
-                }, {
-                    id: 2,
-                    highlight: false
-                }]
-            }
-        )
+        expect(store.getState()).toEqual(createFakeStore(false, false))
     })
 
     it('highlight toggle', () => {
@@ -64,17 +68,7 @@ describe('highlightCrime', () => {
         store.dispatch(highlightCrime(1, true))
         store.dispatch(highlightCrime(1, false))
 
-        expect(store.getState()).toEqual(
-            {
-                crimes: [{
-                    id: 1,
-                    highlight: false
-                }, {
-                    id: 2,
-                    highlight: true
-                }]
-            }
-        )
+        expect(store.getState()).toEqual(createFakeStore(false, true))
     })
 
     it('invalid ID', () => {
@@ -82,16 +76,6 @@ describe('highlightCrime', () => {
 
         store.dispatch(highlightCrime(666, true))
 
-        expect(store.getState()).toEqual(
-            {
-                crimes: [{
-                    id: 1,
-                    highlight: false
-                }, {
-                    id: 2,
-                    highlight: true
-                }]
-            }
-        )
+        expect(store.getState()).toEqual(createFakeStore(false, true))
     })
 })

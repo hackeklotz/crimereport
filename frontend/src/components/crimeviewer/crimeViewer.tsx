@@ -27,11 +27,11 @@ export function CrimeViewer({ crimes, highlightCrime }: IProps) {
 }
 
 // container
-function mapStateToProps({ crimes }: IStoreState) {
-  return {
-    crimes,
-  }
+function mapStateToProps(state: IStoreState) {
+  const { currentReport } = state
+  return { crimes: currentReport.crimes }
 }
+
 function mapDispatchToProps(dispatch: any, ) {
   return {
     highlightCrime: (crimeId: number, highlight: boolean) => dispatch(highlightCrime(crimeId, highlight)),
