@@ -16,7 +16,7 @@ class ReportEndpointTest {
 
         List<String> allReportIds = reportEndpoint.getAllReportIds(null);
 
-        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_456", "MI_2019_789");
+        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_789", "MI_2019_456");
     }
 
     @Test
@@ -25,7 +25,7 @@ class ReportEndpointTest {
 
         List<String> allReportIds = reportEndpoint.getAllReportIds("Landeshauptstadt Dresden");
 
-        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_456", "MI_2019_789");
+        assertThat(allReportIds).containsExactly("MI_2019_123", "MI_2019_789", "MI_2019_456");
     }
 
     @Test

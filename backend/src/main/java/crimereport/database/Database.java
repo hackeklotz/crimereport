@@ -18,6 +18,8 @@ import crimereport.crimes.Crime;
 import crimereport.crimes.CrimeBuilder;
 import crimereport.main.CrimeEndpoint;
 
+import static org.jooq.impl.DSL.field;
+
 public class Database {
 
     private String url;
@@ -117,7 +119,7 @@ public class Database {
         return crimeBuilder.build();
     }
 
-    public TreeSet<String> getAllReportIds(Optional<String> region) {
+    public List<String> getAllReportIds(Optional<String> region) {
         LOGGER.info("Retrieve all report IDs");
         try (Connection conn = DriverManager.getConnection(url)) {
             Condition condition = DSL.trueCondition();
@@ -127,17 +129,21 @@ public class Database {
             Result<Record> result = create
                     .select()
                     .from("crime")
+                    .join("report")
+                    .on(field("crime.reportId").eq(field("report.Id")))
                     .where(condition)
+                    .groupBy(field("crime.reportId"))
+                    .orderBy(field("year"), field("number"))
                     .fetch();
 
-            TreeSet<String> reportIds = new TreeSet<>();
+            List<String> reportIds = new ArrayList<>();
             for (Record record : result) {
                 reportIds.add(record.get("reportId", String.class));
             }
             return reportIds;
         } catch (SQLException e) {
             LOGGER.error("Couldn't retrieve crimes", e);
-            return new TreeSet<>();
+            return new ArrayList<>();
         }
     }
 

@@ -30,8 +30,7 @@ public class ReportEndpoint {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public List<String> getAllReportIds(
             @RequestParam(value = "region", required = false) String region) {
-        TreeSet<String> reportIds = database.getAllReportIds(Optional.ofNullable(region));
-        return new ArrayList<>(reportIds);
+        return database.getAllReportIds(Optional.ofNullable(region));
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
